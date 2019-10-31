@@ -16,3 +16,12 @@ Color.prototype.toHex = function() {
         componentToHex(Math.round(this.g * 255)) +
         componentToHex(Math.round(this.b * 255));
 };
+
+Color.fromHex = hex => {
+    const integer = parseInt(hex, 16);
+
+    return new Color(
+        ((integer >> 16) & 0xFF) / 255,
+        ((integer >> 8) & 0xFF) / 255,
+        (integer & 0xFF) / 255);
+};

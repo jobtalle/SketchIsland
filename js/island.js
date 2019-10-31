@@ -50,7 +50,17 @@ const Island = function(size, height) {
     renderLayers();
 };
 
+Island.GRADIENT_BEACH_START = 0;
+Island.GRADIENT_BEACH_END = 0.1;
+Island.GRADIENT_GRASS_START = 0.15;
+Island.GRADIENT_GRASS_END = 0.7;
+Island.GRADIENT_MOUNTAIN_START = 0.75;
+Island.GRADIENT_MOUNTAIN_END = 1;
 Island.GRADIENT = new Gradient([
-    new Gradient.Stop(0, new Color(0.2, 0.3, 0.5)),
-    new Gradient.Stop(1, new Color(0, 1, 0))
+    new Gradient.Stop(Island.GRADIENT_BEACH_START, StyleUtils.getColor("--color-beach-start")),
+    new Gradient.Stop(Island.GRADIENT_BEACH_END, StyleUtils.getColor("--color-beach-end")),
+    new Gradient.Stop(Island.GRADIENT_GRASS_START, StyleUtils.getColor("--color-grass-start")),
+    new Gradient.Stop(Island.GRADIENT_GRASS_END, StyleUtils.getColor("--color-grass-end")),
+    new Gradient.Stop(Island.GRADIENT_MOUNTAIN_START, StyleUtils.getColor("--color-mountain-start")),
+    new Gradient.Stop(Island.GRADIENT_MOUNTAIN_END, StyleUtils.getColor("--color-mountain-end"))
 ]);
