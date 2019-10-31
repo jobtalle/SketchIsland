@@ -44,7 +44,7 @@ const Island = function(size, height) {
         for (let h = 0; h < height; ++h) {
             context.save();
             context.translate(0, -h * s);
-            context.scale(1, 0.5);
+            context.scale(1, Island.Y_SCALE);
             context.rotate(angle);
             context.scale(s, s);
 
@@ -57,6 +57,7 @@ const Island = function(size, height) {
     renderLayers();
 };
 
+Island.Y_SCALE = 0.35;
 Island.GRADIENT_BEACH_START = 0;
 Island.GRADIENT_BEACH_END = 0.1;
 Island.GRADIENT_GRASS_START = 0.15;
