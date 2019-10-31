@@ -10,7 +10,7 @@ let angle = 0;
 const resize = () => {
     canvas.width = wrapper.offsetWidth;
     canvas.height = wrapper.offsetHeight;
-    island = new Island(500, 300);
+    island = new Island(100, 30);
 };
 
 const update = timeStep => {
@@ -18,6 +18,7 @@ const update = timeStep => {
 
     island.update(Math.min(timeStep, TIME_STEP_MAX));
 
+    context.imageSmoothingEnabled = false;
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.save();
     context.translate(canvas.width * 0.5, canvas.height * 0.5);

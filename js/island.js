@@ -15,6 +15,15 @@ const Island = function(size, height) {
             const context = layers[h].getContext("2d");
 
             context.clearRect(0, 0, layers[h].width, layers[h].height);
+            context.fillStyle = Island.GRADIENT.sample(h / height).toHex();
+
+            for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x)
+                if (heightmap.get(x, y) > h / height)
+                    context.fillRect(
+                        x,
+                        y,
+                        1,
+                        1);
         }
     };
 
@@ -23,18 +32,25 @@ const Island = function(size, height) {
     };
 
     this.draw = (context, angle) => {
-        context.save();
-        context.scale(1, 0.5);
-        context.rotate(angle);
+        const s = 5;
 
-        context.beginPath();
-        context.moveTo(0, 0);
-        context.arc(0, 0, 64, 0, Math.PI * 2);
-        context.strokeStyle = "red";
-        context.stroke();
+        for (let h = 0; h < height; ++h) {
+            context.save();
+            context.translate(0, -h * s);
+            context.scale(1, 0.5);
+            context.rotate(angle);
+            context.scale(s, s);
 
-        context.restore();
+            context.drawImage(layers[h], size * -0.5, size * -0.5);
+
+            context.restore();
+        }
     };
 
     renderLayers();
 };
+
+Island.GRADIENT = new Gradient([
+    new Gradient.Stop(0, new Color(0.2, 0.3, 0.5)),
+    new Gradient.Stop(1, new Color(0, 1, 0))
+]);
