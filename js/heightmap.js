@@ -1,0 +1,3 @@
+const Heightmap = function() {
+
+};

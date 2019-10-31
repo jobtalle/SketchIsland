@@ -1,4 +1,6 @@
 const Island = function(size) {
+    const heightmap = new Heightmap();
+
     this.update = timeStep => {
 
     };
