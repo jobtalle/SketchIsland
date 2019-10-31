@@ -12,9 +12,9 @@ Color.prototype.toHex = function() {
     };
 
     return "#" +
-        componentToHex(Math.round(this.r * 255)) +
-        componentToHex(Math.round(this.g * 255)) +
-        componentToHex(Math.round(this.b * 255));
+        componentToHex(Math.floor(this.r * 256)) +
+        componentToHex(Math.floor(this.g * 256)) +
+        componentToHex(Math.floor(this.b * 256));
 };
 
 Color.fromHex = hex => {

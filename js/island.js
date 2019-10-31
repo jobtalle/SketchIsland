@@ -13,17 +13,24 @@ const Island = function(size, height) {
     const renderLayers = () => {
         for (let h = 0; h < height; ++h) {
             const context = layers[h].getContext("2d");
+            const data = context.createImageData(size, size);
+            const color = Island.GRADIENT.sample(h / height);
+            const r = Math.floor(color.r * 256);
+            const g = Math.floor(color.g * 256);
+            const b = Math.floor(color.b * 256);
 
-            context.clearRect(0, 0, layers[h].width, layers[h].height);
-            context.fillStyle = Island.GRADIENT.sample(h / height).toHex();
+            for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
+                if (heightmap.get(x, y) > h / height) {
+                    const i = x + y * size << 2;
 
-            for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x)
-                if (heightmap.get(x, y) > h / height)
-                    context.fillRect(
-                        x,
-                        y,
-                        1,
-                        1);
+                    data.data[i] = r;
+                    data.data[i + 1] = g;
+                    data.data[i + 2] = b;
+                    data.data[i + 3] = 255;
+                }
+            }
+
+            context.putImageData(data, 0, 0);
         }
     };
 
