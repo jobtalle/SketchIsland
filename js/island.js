@@ -32,7 +32,7 @@ const Island = function(size, height) {
     };
 
     this.draw = (context, angle) => {
-        const s = 5;
+        const s = 4;
 
         for (let h = 0; h < height; ++h) {
             context.save();

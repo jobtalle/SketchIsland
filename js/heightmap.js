@@ -3,7 +3,7 @@ const Heightmap = function(size) {
     const noise = cubicNoiseConfig(Math.random());
 
     const fill = () => {
-        const s = 0.1;
+        const s = 0.05;
 
         for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x)
             heights[x + size * y] = cubicNoiseSample2(noise, x * s, y * s);
