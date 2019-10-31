@@ -10,7 +10,7 @@ let angle = 0;
 const resize = () => {
     canvas.width = wrapper.offsetWidth;
     canvas.height = wrapper.offsetHeight;
-    island = new Island(canvas.width * 0.5);
+    island = new Island(500, 300);
 };
 
 const update = timeStep => {

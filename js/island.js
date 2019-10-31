@@ -1,5 +1,22 @@
-const Island = function(size) {
-    const heightmap = new Heightmap();
+const Island = function(size, height) {
+    const heightmap = new Heightmap(size);
+    const layers = [];
+
+    for (let i = 0; i < height; ++i) {
+        const canvas = document.createElement("canvas");
+
+        canvas.width = canvas.height = size;
+
+        layers.push(canvas);
+    }
+
+    const renderLayers = () => {
+        for (let h = 0; h < height; ++h) {
+            const context = layers[h].getContext("2d");
+
+            context.clearRect(0, 0, layers[h].width, layers[h].height);
+        }
+    };
 
     this.update = timeStep => {
 
@@ -18,4 +35,6 @@ const Island = function(size) {
 
         context.restore();
     };
+
+    renderLayers();
 };
