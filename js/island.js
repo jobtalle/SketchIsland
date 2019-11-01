@@ -44,7 +44,7 @@ const Island = function(size, height, plan) {
     this.draw = (context, angle) => {
         for (let h = 0; h < height; ++h) {
             context.save();
-            context.translate(0, -h * Island.SCALE);
+            context.translate(0, (height * 0.5 - h) * Island.SCALE);
             context.scale(1, Island.Y_SCALE);
             context.rotate(angle);
             context.scale(Island.SCALE, Island.SCALE);
@@ -59,7 +59,7 @@ const Island = function(size, height, plan) {
 };
 
 Island.SCALE = 3.5;
-Island.Y_SCALE = 0.4;
+Island.Y_SCALE = 0.35;
 Island.LIGHTING_AMBIENT = 0.9;
 Island.LIGHTING_ANGLE = new Vector3(1, -1, 2.5).normalize();
 Island.GRADIENT_BEACH_START = 0;

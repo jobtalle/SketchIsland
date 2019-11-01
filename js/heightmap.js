@@ -59,8 +59,8 @@ const Heightmap = function(size) {
 
 Heightmap.NORMAL_EDGE = new Vector3(0, 0, -1);
 Heightmap.WATER_THRESHOLD = 0.1;
-Heightmap.POWER = 4;
-Heightmap.MULTIPLIER = 7;
+Heightmap.POWER = 3.5;
+Heightmap.MULTIPLIER = 5.5;
 Heightmap.PEAK_POWER = 0.7;
 Heightmap.SCALE_INITIAL = 0.01;
 Heightmap.SCALE_FALLOFF = 1.75;
