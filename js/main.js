@@ -18,7 +18,7 @@ const resize = () => {
     canvas.width = wrapper.offsetWidth;
     canvas.height = wrapper.offsetHeight;
     size = Math.floor(canvas.width * H_FILL / Island.SCALE);
-    island = new Island(size, 60, new Plan(size));
+    island = new Island(size, new Plan(size));
     updated = true;
 };
 
