@@ -25,8 +25,13 @@ const Heightmap = function(size) {
     const fill = () => {
         const noises = new Array(Heightmap.OCTAVES);
 
-        for (let i = 0; i < Heightmap.OCTAVES; ++i)
-            noises[i] = cubicNoiseConfig(Math.random());
+        let s = (1 / size) * Heightmap.SCALE;
+
+        for (let i = 0; i < Heightmap.OCTAVES; ++i) {
+            noises[i] = new BufferedCubicNoise(Math.ceil(s * size), Math.ceil(s * size));
+
+            s *= Heightmap.SCALE_FALLOFF;
+        }
 
         for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
             const dx = size * 0.5 - x;
@@ -39,7 +44,7 @@ const Heightmap = function(size) {
             let scale = (1 / size) * Heightmap.SCALE;
 
             for (let octave = 0; octave < Heightmap.OCTAVES; ++octave) {
-                sample += cubicNoiseSample2(noises[octave], x * scale, y * scale) * influence;
+                sample += noises[octave].sample(x * scale, y * scale) * influence;
 
                 influence /= Heightmap.OCTAVE_FALLOFF;
                 scale *= Heightmap.SCALE_FALLOFF;
@@ -60,9 +65,9 @@ const Heightmap = function(size) {
 Heightmap.NORMAL_EDGE = new Vector3(0, 0, -1);
 Heightmap.WATER_THRESHOLD = 0.1;
 Heightmap.POWER = 3.5;
-Heightmap.MULTIPLIER = 5.5;
+Heightmap.MULTIPLIER = 5;
 Heightmap.PEAK_POWER = 0.7;
-Heightmap.SCALE = 4;
+Heightmap.SCALE = 4.5;
 Heightmap.SCALE_FALLOFF = 1.75;
 Heightmap.OCTAVES = 6;
 Heightmap.OCTAVE_FALLOFF = 2.3;

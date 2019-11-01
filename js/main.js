@@ -1,6 +1,6 @@
 const ANGLE_SPEED = 0.3;
 const DRAG_SPEED = 0.006;
-const H_FILL = 0.8;
+const H_FILL = 1;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
