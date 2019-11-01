@@ -1,6 +1,6 @@
 const Heightmap = function(size) {
     const heights = new Array(size * size);
-    const normals = new Array(heights.length);
+    const normals = new Array(heights.length).fill(Heightmap.NORMAL_EDGE);
 
     const calculateNormals = () => {
         const step = 1 / size;
@@ -45,7 +45,7 @@ const Heightmap = function(size) {
                 scale *= Heightmap.SCALE_FALLOFF;
             }
 
-            heights[x + size * y] = Math.min(1, multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD);
+            heights[x + size * y] = Math.max(0, Math.min(1, multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD));
         }
 
         calculateNormals();

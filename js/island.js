@@ -1,5 +1,4 @@
-const Island = function(size, height) {
-    const heightmap = new Heightmap(size);
+const Island = function(size, height, plan) {
     const layers = [];
 
     for (let i = 0; i < height; ++i) {
@@ -20,9 +19,9 @@ const Island = function(size, height) {
             const b = Math.floor(color.b * 256);
 
             for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
-                if (heightmap.getHeight(x, y) > h / height) {
+                if (plan.getHeightmap().getHeight(x, y) > h / height) {
                     const i = x + y * size << 2;
-                    const exposure = Math.max(0, heightmap.getNormal(x, y).dot(Island.LIGHTING_ANGLE));
+                    const exposure = Math.max(0, plan.getHeightmap().getNormal(x, y).dot(Island.LIGHTING_ANGLE));
                     const l = Island.LIGHTING_AMBIENT + 2 * (1 - Island.LIGHTING_AMBIENT) * exposure;
 
                     data.data[i] = Math.min(Math.round(r * l), 255);
@@ -36,8 +35,10 @@ const Island = function(size, height) {
         }
     };
 
-    this.update = timeStep => {
+    this.setPlan = newPlan => {
+        plan = newPlan;
 
+        renderLayers();
     };
 
     this.draw = (context, angle) => {
