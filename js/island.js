@@ -34,19 +34,19 @@ const Island = function(size, height) {
         }
     };
 
+    this.getSize = () => size;
+
     this.update = timeStep => {
 
     };
 
     this.draw = (context, angle) => {
-        const s = 4;
-
         for (let h = 0; h < height; ++h) {
             context.save();
-            context.translate(0, -h * s);
+            context.translate(0, -h * Island.SCALE);
             context.scale(1, Island.Y_SCALE);
             context.rotate(angle);
-            context.scale(s, s);
+            context.scale(Island.SCALE, Island.SCALE);
 
             context.drawImage(layers[h], size * -0.5, size * -0.5);
 
@@ -57,7 +57,8 @@ const Island = function(size, height) {
     renderLayers();
 };
 
-Island.Y_SCALE = 0.35;
+Island.SCALE = 4;
+Island.Y_SCALE = 0.4;
 Island.GRADIENT_BEACH_START = 0;
 Island.GRADIENT_BEACH_END = 0.1;
 Island.GRADIENT_GRASS_START = 0.15;

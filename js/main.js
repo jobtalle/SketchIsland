@@ -1,5 +1,6 @@
 const TIME_STEP_MAX = 0.1;
 const ANGLE_SPEED = 0.3;
+const H_FILL = 0.8;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
@@ -10,7 +11,7 @@ let angle = 0;
 const resize = () => {
     canvas.width = wrapper.offsetWidth;
     canvas.height = wrapper.offsetHeight;
-    island = new Island(250, 60);
+    island = new Island(Math.floor(canvas.width * H_FILL / Island.SCALE), 60);
 };
 
 const update = timeStep => {
