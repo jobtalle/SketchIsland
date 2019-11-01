@@ -20,12 +20,16 @@ const Island = function(size, height) {
             const b = Math.floor(color.b * 256);
 
             for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
-                if (heightmap.get(x, y) > h / height) {
+                if (heightmap.getHeight(x, y) > h / height) {
                     const i = x + y * size << 2;
+                    const dx = heightmap.getDx(x, y) * 60;
+                    let l = 0.9 + 0.3 * Math.abs(dx - 0.5);
 
-                    data.data[i] = r;
-                    data.data[i + 1] = g;
-                    data.data[i + 2] = b;
+                    //l = 1;
+
+                    data.data[i] = r * l;
+                    data.data[i + 1] = g * l;
+                    data.data[i + 2] = b * l;
                     data.data[i + 3] = 255;
                 }
             }
@@ -33,8 +37,6 @@ const Island = function(size, height) {
             context.putImageData(data, 0, 0);
         }
     };
-
-    this.getSize = () => size;
 
     this.update = timeStep => {
 

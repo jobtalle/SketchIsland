@@ -19,7 +19,7 @@ const update = timeStep => {
 
     island.update(Math.min(timeStep, TIME_STEP_MAX));
 
-    context.imageSmoothingEnabled = false;
+    context.imageSmoothingEnabled = true;
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.save();
     context.translate(canvas.width * 0.5, canvas.height * 0.5);
