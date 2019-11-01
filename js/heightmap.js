@@ -45,7 +45,7 @@ const Heightmap = function(size) {
                 scale *= Heightmap.SCALE_FALLOFF;
             }
 
-            heights[x + size * y] = multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD;
+            heights[x + size * y] = Math.min(1, multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD);
         }
 
         calculateNormals();
