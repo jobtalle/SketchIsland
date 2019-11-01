@@ -1,18 +1,24 @@
 const Heightmap = function(size) {
     const heights = new Array(size * size);
-    const dx = new Array(size * size);
-    const dy = new Array(size * size);
+    const normals = new Array(heights.length);
 
-    const calculateDerivatives = () => {
+    const calculateNormals = () => {
+        const step = 1 / size;
+
         for (let y = 1; y < size - 1; ++y) for (let x = 1; x < size - 1; ++x) {
             const index = x + size * y;
-            const dxl = heights[index] - heights[x + size * y - 1];
-            const dxr = heights[x + size * y + 1] - heights[index];
-            const dyt = heights[index] - heights[x + size * (y - 1)];
-            const dyb = heights[x + size * (y + 1)] - heights[index];
+            const left = new Vector3(-step, 0, heights[index] - heights[index - 1]);
+            const right = new Vector3(step, 0, heights[index] - heights[index + 1]);
+            const top = new Vector3(0, -step, heights[index] - heights[index - size]);
+            const bottom = new Vector3(0, step, heights[index] - heights[index + size]);
+            const normal = new Vector3(0, 0, 0);
 
-            dx[index] = (dxl + dxr) * 0.5;
-            dy[index] = (dyt + dyb) * 0.5;
+            normal.add(bottom.cross(left));
+            normal.add(right.cross(bottom));
+            normal.add(top.cross(right));
+            normal.add(left.cross(top));
+
+            normals[index] = normal.normalize();
         }
     };
 
@@ -42,16 +48,16 @@ const Heightmap = function(size) {
             heights[x + size * y] = multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD;
         }
 
-        calculateDerivatives();
+        calculateNormals();
     };
 
     this.getHeight = (x, y) => heights[x + size * y];
-    this.getDx = (x, y) => dx[x + size * y];
-    this.getDy = (x, y) => dy[x + size * y];
+    this.getNormal = (x, y) => normals[x + size * y];
 
     fill();
 };
 
+Heightmap.NORMAL_EDGE = new Vector3(0, 0, -1);
 Heightmap.WATER_THRESHOLD = 0.1;
 Heightmap.POWER = 4;
 Heightmap.MULTIPLIER = 7;

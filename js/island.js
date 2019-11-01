@@ -22,14 +22,12 @@ const Island = function(size, height) {
             for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
                 if (heightmap.getHeight(x, y) > h / height) {
                     const i = x + y * size << 2;
-                    const dx = heightmap.getDx(x, y) * 60;
-                    let l = 0.9 + 0.3 * Math.abs(dx - 0.5);
+                    const exposure = Math.max(0, heightmap.getNormal(x, y).dot(Island.LIGHTING_ANGLE));
+                    const l = Island.LIGHTING_AMBIENT + 2 * (1 - Island.LIGHTING_AMBIENT) * exposure;
 
-                    //l = 1;
-
-                    data.data[i] = r * l;
-                    data.data[i + 1] = g * l;
-                    data.data[i + 2] = b * l;
+                    data.data[i] = Math.min(Math.round(r * l), 255);
+                    data.data[i + 1] = Math.min(Math.round(g * l), 255);
+                    data.data[i + 2] = Math.min(Math.round(b * l), 255);
                     data.data[i + 3] = 255;
                 }
             }
@@ -61,6 +59,8 @@ const Island = function(size, height) {
 
 Island.SCALE = 3.5;
 Island.Y_SCALE = 0.4;
+Island.LIGHTING_AMBIENT = 0.9;
+Island.LIGHTING_ANGLE = new Vector3(1, -1, 2.5).normalize();
 Island.GRADIENT_BEACH_START = 0;
 Island.GRADIENT_BEACH_END = 0.05;
 Island.GRADIENT_GRASS_START = 0.1;
