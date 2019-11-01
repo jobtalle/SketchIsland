@@ -1,6 +1,7 @@
 :root {
-    --color-beach-start: #fff979;
-    --color-beach-end: #c5c17a;
+    --color-ocean: #64a9eb;
+    --color-beach-start: #64a9eb;
+    --color-beach-end: #d3c78c;
     --color-grass-start: #66ae60;
     --color-grass-end: #374b2e;
     --color-mountain-start: #715239;
@@ -15,7 +16,7 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: #6cb7ff;
+    background-color: var(--color-ocean);
 }
 
 #wrapper #renderer {

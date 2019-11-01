@@ -57,11 +57,11 @@ const Island = function(size, height) {
     renderLayers();
 };
 
-Island.SCALE = 4;
+Island.SCALE = 3.5;
 Island.Y_SCALE = 0.4;
 Island.GRADIENT_BEACH_START = 0;
-Island.GRADIENT_BEACH_END = 0.1;
-Island.GRADIENT_GRASS_START = 0.15;
+Island.GRADIENT_BEACH_END = 0.05;
+Island.GRADIENT_GRASS_START = 0.1;
 Island.GRADIENT_GRASS_END = 0.7;
 Island.GRADIENT_MOUNTAIN_START = 0.75;
 Island.GRADIENT_MOUNTAIN_END = 1;
