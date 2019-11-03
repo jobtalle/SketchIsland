@@ -14,16 +14,23 @@ const Island = function(size, plan) {
         for (let h = 0; h < height; ++h) {
             const context = layers[h].getContext("2d");
             const data = context.createImageData(size, size);
-            const color = Island.GRADIENT.sample(h / height);
-            const r = Math.floor(color.r * 256);
-            const g = Math.floor(color.g * 256);
-            const b = Math.floor(color.b * 256);
+            let gradientType = -1;
+            let color, r, g, b;
 
             for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
                 if (plan.getHeightmap().getHeight(x, y) > h / height) {
+                    const type = plan.getHeightmap().getType(x, y);
                     const i = x + y * size << 2;
                     const exposure = Math.max(0, plan.getHeightmap().getNormal(x, y).dot(Island.LIGHTING_ANGLE));
                     const l = Island.LIGHTING_AMBIENT + 2 * (1 - Island.LIGHTING_AMBIENT) * exposure;
+
+                    if (gradientType !== type) {
+                        gradientType = type;
+                        color = Island.GRADIENTS[type].sample(h / height);
+                        r = Math.floor(color.r * 256);
+                        g = Math.floor(color.g * 256);
+                        b = Math.floor(color.b * 256);
+                    }
 
                     data.data[i] = Math.min(Math.round(r * l), 255);
                     data.data[i + 1] = Math.min(Math.round(g * l), 255);
@@ -70,11 +77,20 @@ Island.GRADIENT_GRASS_START = 0.1;
 Island.GRADIENT_GRASS_END = 0.7;
 Island.GRADIENT_MOUNTAIN_START = 0.75;
 Island.GRADIENT_MOUNTAIN_END = 1;
-Island.GRADIENT = new Gradient([
+Island.GRADIENT_VOLCANO_SURFACE = 0.9;
+Island.GRADIENT_VOLCANO_DEEP = 0.6;
+Island.GRADIENTS = [];
+Island.GRADIENTS[Heightmap.TYPE_DEFAULT] = new Gradient([
     new Gradient.Stop(Island.GRADIENT_BEACH_START, StyleUtils.getColor("--color-beach-start")),
     new Gradient.Stop(Island.GRADIENT_BEACH_END, StyleUtils.getColor("--color-beach-end")),
     new Gradient.Stop(Island.GRADIENT_GRASS_START, StyleUtils.getColor("--color-grass-start")),
     new Gradient.Stop(Island.GRADIENT_GRASS_END, StyleUtils.getColor("--color-grass-end")),
     new Gradient.Stop(Island.GRADIENT_MOUNTAIN_START, StyleUtils.getColor("--color-mountain-start")),
     new Gradient.Stop(Island.GRADIENT_MOUNTAIN_END, StyleUtils.getColor("--color-mountain-end"))
+]);
+Island.GRADIENTS[Heightmap.TYPE_VOLCANO] = new Gradient([
+    new Gradient.Stop(0, StyleUtils.getColor("--color-volcano-deep")),
+    new Gradient.Stop(Island.GRADIENT_VOLCANO_DEEP, StyleUtils.getColor("--color-volcano-deep")),
+    new Gradient.Stop(Island.GRADIENT_VOLCANO_SURFACE, StyleUtils.getColor("--color-volcano-surface")),
+    new Gradient.Stop(1, StyleUtils.getColor("--color-mountain-end"))
 ]);

@@ -1,6 +1,7 @@
 const Heightmap = function(size) {
     const heights = new Array(size * size);
     const normals = new Array(heights.length).fill(Heightmap.NORMAL_EDGE);
+    const types = new Array(heights.length);
 
     const calculateNormals = () => {
         const step = 1 / size;
@@ -35,6 +36,7 @@ const Heightmap = function(size) {
         }
 
         for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
+            const index = x + y * size;
             const dx = size * 0.5 - x;
             const dy = size * 0.5 - y;
             const peakDistance = Math.min(1, Math.sqrt(dx * dx + dy * dy) / size * 2);
@@ -51,7 +53,20 @@ const Heightmap = function(size) {
                 scale *= Heightmap.SCALE_FALLOFF;
             }
 
-            heights[x + size * y] = Math.max(0, Math.min(1, multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD));
+            let height = multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD;
+
+            if (height > 1) {
+                height = 1 - Math.min(1, Math.max(0, height - 1 - Heightmap.VOLCANO_RIM));
+
+                if (height === 1)
+                    types[index] = Heightmap.TYPE_DEFAULT;
+                else
+                    types[index] = Heightmap.TYPE_VOLCANO;
+            }
+            else
+                types[index] = Heightmap.TYPE_DEFAULT;
+
+            heights[index] = Math.max(0, height);
         }
 
         calculateNormals();
@@ -59,10 +74,14 @@ const Heightmap = function(size) {
 
     this.getHeight = (x, y) => heights[x + size * y];
     this.getNormal = (x, y) => normals[x + size * y];
+    this.getType = (x, y) => types[x + size * y];
 
     fill();
 };
 
+Heightmap.TYPE_DEFAULT = 0;
+Heightmap.TYPE_VOLCANO = 1;
+Heightmap.VOLCANO_RIM = 0.07;
 Heightmap.NORMAL_EDGE = new Vector3(0, 0, -1);
 Heightmap.WATER_THRESHOLD = 0.1;
 Heightmap.POWER = 3.5;

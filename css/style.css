@@ -6,6 +6,8 @@
     --color-grass-end: #374b2e;
     --color-mountain-start: #715239;
     --color-mountain-end: #3e352d;
+    --color-volcano-surface: #ca532b;
+    --color-volcano-deep: #d6b445;
 }
 
 body {
