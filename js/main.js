@@ -22,7 +22,7 @@ const resize = () => {
     canvas.height = wrapper.offsetHeight;
     size = Math.floor(canvas.width * X_FILL / Island.SCALE);
     height = Math.ceil(size * HEIGHT_RATIO);
-    island = new Island(size, lighting, new Plan(size, height));
+    island = new Island(size, lighting, new Plan(size, height, lighting));
     updated = true;
 };
 
@@ -69,7 +69,7 @@ const mouseDown = (x, y, drag) => {
         angleDelta = 0;
     }
     else {
-        island.setPlan(new Plan(size, height));
+        island.setPlan(new Plan(size, height, lighting));
         updated = true;
     }
 };

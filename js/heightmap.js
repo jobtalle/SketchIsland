@@ -8,10 +8,10 @@ const Heightmap = function(size) {
 
         for (let y = 1; y < size - 1; ++y) for (let x = 1; x < size - 1; ++x) {
             const index = x + size * y;
-            const left = new Vector3(-step, 0, heights[index] - heights[index - 1]);
-            const right = new Vector3(step, 0, heights[index] - heights[index + 1]);
-            const top = new Vector3(0, -step, heights[index] - heights[index - size]);
-            const bottom = new Vector3(0, step, heights[index] - heights[index + size]);
+            const left = new Vector3(-step, 0, heights[index - 1] - heights[index]);
+            const right = new Vector3(step, 0, heights[index + 1] - heights[index]);
+            const top = new Vector3(0, -step, heights[index - size] - heights[index]);
+            const bottom = new Vector3(0, step, heights[index + size] - heights[index]);
             const normal = new Vector3(0, 0, 0);
 
             normal.add(bottom.cross(left));

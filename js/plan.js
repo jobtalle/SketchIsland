@@ -1,4 +1,4 @@
-const Plan = function(size, height) {
+const Plan = function(size, height, lighting) {
     const heightmap = new Heightmap(size);
     const planes = new Planes(height);
 
@@ -6,5 +6,5 @@ const Plan = function(size, height) {
     this.getHeightmap = () => heightmap;
     this.getPlanes = () => planes;
 
-    new Trees(size, height, heightmap, planes).plant();
+    new Trees(size, height, heightmap, planes, lighting).plant();
 };
