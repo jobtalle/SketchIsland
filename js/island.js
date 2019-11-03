@@ -1,4 +1,4 @@
-const Island = function(size, plan) {
+const Island = function(size, lighting, plan) {
     const layers = [];
 
     for (let i = 0; i < plan.getHeight(); ++i) {
@@ -20,8 +20,7 @@ const Island = function(size, plan) {
                 if (plan.getHeightmap().getHeight(x, y) > h / plan.getHeight()) {
                     const type = plan.getHeightmap().getType(x, y);
                     const i = x + y * size << 2;
-                    const exposure = Math.max(0, plan.getHeightmap().getNormal(x, y).dot(Island.LIGHTING_ANGLE));
-                    const l = Island.LIGHTING_AMBIENT + 2 * (1 - Island.LIGHTING_AMBIENT) * exposure;
+                    const l = lighting.get(plan.getHeightmap().getNormal(x, y));
 
                     if (gradientType !== type) {
                         gradientType = type;
@@ -68,10 +67,8 @@ const Island = function(size, plan) {
     renderLayers();
 };
 
-Island.SCALE = 3;
+Island.SCALE = 2.5;
 Island.Y_SCALE = 0.4;
-Island.LIGHTING_AMBIENT = 0.9;
-Island.LIGHTING_ANGLE = new Vector3(1, -1, 2.5).normalize();
 Island.GRADIENT_BEACH_START = 0;
 Island.GRADIENT_BEACH_END = 0.05;
 Island.GRADIENT_GRASS_START = 0.1;

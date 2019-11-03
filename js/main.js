@@ -3,6 +3,7 @@ const DRAG_SPEED = 0.006;
 const X_FILL = 1;
 const HEIGHT_RATIO = 0.18;
 
+const lighting = new Lighting();
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
 let lastDate = new Date();
@@ -21,7 +22,7 @@ const resize = () => {
     canvas.height = wrapper.offsetHeight;
     size = Math.floor(canvas.width * X_FILL / Island.SCALE);
     height = Math.ceil(size * HEIGHT_RATIO);
-    island = new Island(size, new Plan(size, height));
+    island = new Island(size, lighting, new Plan(size, height));
     updated = true;
 };
 
