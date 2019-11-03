@@ -1,12 +1,14 @@
 const ANGLE_SPEED = 0.3;
 const DRAG_SPEED = 0.006;
-const H_FILL = 1;
+const X_FILL = 1;
+const HEIGHT_RATIO = 0.18;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
 let lastDate = new Date();
 let island = null;
 let size = 0;
+let height = 0;
 let angle = 0;
 let angleDelta = ANGLE_SPEED;
 let updated = false;
@@ -17,8 +19,9 @@ let timeStepLast = 0;
 const resize = () => {
     canvas.width = wrapper.offsetWidth;
     canvas.height = wrapper.offsetHeight;
-    size = Math.floor(canvas.width * H_FILL / Island.SCALE);
-    island = new Island(size, new Plan(size));
+    size = Math.floor(canvas.width * X_FILL / Island.SCALE);
+    height = Math.ceil(size * HEIGHT_RATIO);
+    island = new Island(size, new Plan(size, height));
     updated = true;
 };
 
@@ -65,7 +68,7 @@ const mouseDown = (x, y, drag) => {
         angleDelta = 0;
     }
     else {
-        island.setPlan(new Plan(size));
+        island.setPlan(new Plan(size, height));
         updated = true;
     }
 };

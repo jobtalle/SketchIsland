@@ -1,8 +1,7 @@
 const Island = function(size, plan) {
-    const height = Math.ceil(size * Island.HEIGHT);
     const layers = [];
 
-    for (let i = 0; i < height; ++i) {
+    for (let i = 0; i < plan.getHeight(); ++i) {
         const canvas = document.createElement("canvas");
 
         canvas.width = canvas.height = size;
@@ -11,14 +10,14 @@ const Island = function(size, plan) {
     }
 
     const renderLayers = () => {
-        for (let h = 0; h < height; ++h) {
+        for (let h = 0; h < plan.getHeight(); ++h) {
             const context = layers[h].getContext("2d");
             const data = context.createImageData(size, size);
             let gradientType = -1;
             let color, r, g, b;
 
             for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
-                if (plan.getHeightmap().getHeight(x, y) > h / height) {
+                if (plan.getHeightmap().getHeight(x, y) > h / plan.getHeight()) {
                     const type = plan.getHeightmap().getType(x, y);
                     const i = x + y * size << 2;
                     const exposure = Math.max(0, plan.getHeightmap().getNormal(x, y).dot(Island.LIGHTING_ANGLE));
@@ -26,7 +25,7 @@ const Island = function(size, plan) {
 
                     if (gradientType !== type) {
                         gradientType = type;
-                        color = Island.GRADIENTS[type].sample(h / height);
+                        color = Island.GRADIENTS[type].sample(h / plan.getHeight());
                         r = Math.floor(color.r * 256);
                         g = Math.floor(color.g * 256);
                         b = Math.floor(color.b * 256);
@@ -40,6 +39,9 @@ const Island = function(size, plan) {
             }
 
             context.putImageData(data, 0, 0);
+
+            for (const plane of plan.getPlanes().getPlanes(h))
+                context.drawImage(plane.image, plane.x, plane.y);
         }
     };
 
@@ -50,9 +52,9 @@ const Island = function(size, plan) {
     };
 
     this.draw = (context, angle) => {
-        for (let h = 0; h < height; ++h) {
+        for (let h = 0; h < plan.getHeight(); ++h) {
             context.save();
-            context.translate(0, (height * 0.5 - h) * Island.SCALE);
+            context.translate(0, (plan.getHeight() * 0.5 - h) * Island.SCALE);
             context.scale(1, Island.Y_SCALE);
             context.rotate(angle);
             context.scale(Island.SCALE, Island.SCALE);
@@ -67,8 +69,7 @@ const Island = function(size, plan) {
 };
 
 Island.SCALE = 3;
-Island.Y_SCALE = 0.35;
-Island.HEIGHT = 0.18;
+Island.Y_SCALE = 0.4;
 Island.LIGHTING_AMBIENT = 0.9;
 Island.LIGHTING_ANGLE = new Vector3(1, -1, 2.5).normalize();
 Island.GRADIENT_BEACH_START = 0;
