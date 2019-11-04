@@ -1,17 +1,23 @@
-const Island = function(lighting, plan) {
+const Island = function(lighting) {
+    let ready = false;
+    let plan = null;
     let layers = null;
+    let z;
 
-    const renderLayers = () => {
+    this.generate = () => {
+        const startTime = new Date();
         const size = plan.getSize();
 
-        for (let z = 0; z < plan.getHeight(); ++z) {
+        while ((new Date() - startTime) * 0.001 < Island.GEN_RATE) {
+            layers[z].width = layers[z].height = plan.getSize();
+
             const context = layers[z].getContext("2d");
             const data = context.createImageData(plan.getSize(), plan.getSize());
             let index = 0;
 
             for (let y = 0; y < size; ++y) {
-                let shapes = null;
-                let shapesRefresh = 1;
+                let shapes = plan.getShapes().get(0, y, z);
+                let shapesRefresh = Shapes.CELL_SIZE + 1;
 
                 for (let x = 0; x < size; ++x) {
                     if (--shapesRefresh === 0) {
@@ -42,27 +48,30 @@ const Island = function(lighting, plan) {
             }
 
             context.putImageData(data, 0, 0);
+
+            if (++z === plan.getHeight()) {
+                ready = true;
+
+                break;
+            }
         }
+
+        return z / plan.getHeight();
     };
 
+    this.isReady = () => ready;
     this.getLayers = () => layers;
-
     this.getPlan = () => plan;
 
     this.setPlan = newPlan => {
+        z = 0;
+        ready = false;
         plan = newPlan;
         layers = new Array(plan.getHeight());
 
-        for (let i = 0; i < plan.getHeight(); ++i) {
-            const canvas = document.createElement("canvas");
-
-            canvas.width = canvas.height = plan.getSize();
-
-            layers[i] = canvas;
-        }
-
-        renderLayers();
+        for (let i = 0; i < plan.getHeight(); ++i)
+            layers[i] = document.createElement("canvas");
     };
-
-    this.setPlan(plan);
 };
+
+Island.GEN_RATE = 1 / 30;
