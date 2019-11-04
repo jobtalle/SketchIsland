@@ -7,27 +7,37 @@ const Island = function(lighting, plan) {
         for (let z = 0; z < plan.getHeight(); ++z) {
             const context = layers[z].getContext("2d");
             const data = context.createImageData(plan.getSize(), plan.getSize());
+            let index = 0;
 
             for (let y = 0; y < size; ++y) {
+                let shapes = null;
+                let shapesRefresh = 1;
+
                 for (let x = 0; x < size; ++x) {
-                    for (const shape of plan.getShapes().get(x, y, z)) {
+                    if (--shapesRefresh === 0) {
+                        shapesRefresh = Shapes.CELL_SIZE;
+                        shapes = plan.getShapes().get(x, y, z);
+                    }
+
+                    for (const shape of shapes) {
                         if (!shape.bounds || shape.bounds.contains(x, y, z)) {
-                            const index = x + y * size << 2;
                             const sample = shape.sample(x, y, z);
 
                             if (!sample)
                                 continue;
 
-                            const l = lighting.get(sample.normal);
+                            const l = lighting.get(sample.normal) * 255;
 
-                            data.data[index] = Math.min(Math.round(Math.floor(sample.color.r * 255) * l), 255);
-                            data.data[index + 1] = Math.min(Math.round(Math.floor(sample.color.g * 255) * l), 255);
-                            data.data[index + 2] = Math.min(Math.round(Math.floor(sample.color.b * 255) * l), 255);
+                            data.data[index] = Math.min(Math.round(sample.color.r * l), 255);
+                            data.data[index + 1] = Math.min(Math.round(sample.color.g * l), 255);
+                            data.data[index + 2] = Math.min(Math.round(sample.color.b * l), 255);
                             data.data[index + 3] = 255;
 
                             break; // TODO: Continue if alpha is not 1
                         }
                     }
+
+                    index += 4;
                 }
             }
 
