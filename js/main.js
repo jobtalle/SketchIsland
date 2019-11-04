@@ -8,9 +8,11 @@ const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
 let lastDate = new Date();
 let island = null;
+let renderer = null;
 let size = 0;
 let height = 0;
 let angle = 0;
+let pitch = 0.4;
 let angleDelta = ANGLE_SPEED;
 let updated = false;
 let dragging = false;
@@ -23,29 +25,19 @@ const resize = () => {
     size = Math.floor(canvas.width * X_FILL / Island.SCALE);
     height = Math.ceil(size * HEIGHT_RATIO);
     island = new Island(lighting, new Plan(size, height));
+    renderer = new RendererCanvas(island, canvas);
     updated = true;
 };
 
 const update = timeStep => {
-    const context = canvas.getContext("2d");
-
-    //island.update(Math.min(timeStep, TIME_STEP_MAX));
-
     if (updated || (!dragging && angleDelta !== 0)) {
-        context.imageSmoothingEnabled = true;
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.save();
-        context.translate(canvas.width * 0.5, canvas.height * 0.5);
-
         if (!dragging && angleDelta !== 0)
             if ((angle += timeStep * angleDelta) > Math.PI + Math.PI)
                 angle -= Math.PI + Math.PI;
             else if (angle < 0)
                 angle += Math.PI + Math.PI;
 
-        island.draw(context, angle);
-
-        context.restore();
+        renderer.render(angle, pitch);
 
         updated = false;
     }

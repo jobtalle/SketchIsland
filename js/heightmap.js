@@ -100,3 +100,24 @@ Heightmap.OCTAVE_FALLOFF = 2.4;
 Heightmap.OCTAVE_INFLUENCE_INITIAL = ((Heightmap.OCTAVE_FALLOFF - 1) *
     (Math.pow(Heightmap.OCTAVE_FALLOFF, Heightmap.OCTAVES))) /
     (Math.pow(Heightmap.OCTAVE_FALLOFF, Heightmap.OCTAVES) - 1) / Heightmap.OCTAVE_FALLOFF;
+Heightmap.GRADIENT_BEACH_START = 0;
+Heightmap.GRADIENT_BEACH_END = 0.05;
+Heightmap.GRADIENT_GRASS_START = 0.1;
+Heightmap.GRADIENT_GRASS_END = 0.7;
+Heightmap.GRADIENT_MOUNTAIN_START = 0.75;
+Heightmap.GRADIENT_MOUNTAIN_END = 1;
+Heightmap.GRADIENT_VOLCANO_SURFACE = 0.9;
+Heightmap.GRADIENT_VOLCANO_DEEP = 0.6;
+Heightmap.GRADIENTS = [
+    new Gradient([
+        new Gradient.Stop(Heightmap.GRADIENT_BEACH_START, StyleUtils.getColor("--color-beach-start")),
+        new Gradient.Stop(Heightmap.GRADIENT_BEACH_END, StyleUtils.getColor("--color-beach-end")),
+        new Gradient.Stop(Heightmap.GRADIENT_GRASS_START, StyleUtils.getColor("--color-grass-start")),
+        new Gradient.Stop(Heightmap.GRADIENT_GRASS_END, StyleUtils.getColor("--color-grass-end")),
+        new Gradient.Stop(Heightmap.GRADIENT_MOUNTAIN_START, StyleUtils.getColor("--color-mountain-start")),
+        new Gradient.Stop(Heightmap.GRADIENT_MOUNTAIN_END, StyleUtils.getColor("--color-mountain-end"))]),
+    new Gradient([
+        new Gradient.Stop(0, StyleUtils.getColor("--color-volcano-deep")),
+        new Gradient.Stop(Heightmap.GRADIENT_VOLCANO_DEEP, StyleUtils.getColor("--color-volcano-deep")),
+        new Gradient.Stop(Heightmap.GRADIENT_VOLCANO_SURFACE, StyleUtils.getColor("--color-volcano-surface")),
+        new Gradient.Stop(1, StyleUtils.getColor("--color-mountain-end"))])];

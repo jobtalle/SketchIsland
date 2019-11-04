@@ -1,4 +1,4 @@
-const ShapeHeightmap = function(heightmap, height, gradientDefault, gradientVolcano) {
+const ShapeHeightmap = function(heightmap, height) {
     const colorsDefault = new Array(height);
     const colorsVolcano = new Array(height);
 
@@ -21,7 +21,7 @@ const ShapeHeightmap = function(heightmap, height, gradientDefault, gradientVolc
     };
 
     for (let z = 0; z < height; ++z) {
-        colorsDefault[z] = gradientDefault.sample(z / height);
-        colorsVolcano[z] = gradientVolcano.sample(z / height);
+        colorsDefault[z] = Heightmap.GRADIENTS[Heightmap.TYPE_DEFAULT].sample(z / height);
+        colorsVolcano[z] = Heightmap.GRADIENTS[Heightmap.TYPE_VOLCANO].sample(z / height);
     }
 };
