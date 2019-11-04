@@ -12,21 +12,26 @@ let lastDate = new Date();
 let renderer = null;
 let size = 0;
 let height = 0;
-let angle = 0;
+let angle = Math.PI * 0.5;
 let pitch = 0.4;
 let scale = 2;
-let angleDelta = ANGLE_SPEED;
+let angleDelta = 0;
 let updated = false;
 let dragging = false;
 let xDrag = 0;
 
-const resize = () => {
-    canvas.width = canvasWrapper.offsetWidth;
-    canvas.height = canvasWrapper.offsetHeight;
+const updateParameters = () => {
     size = Math.floor(canvas.width * X_FILL / scale);
     height = Math.ceil(size * HEIGHT_RATIO);
     renderer = new RendererCanvas(island, canvas);
     updated = true;
+};
+
+const resize = () => {
+    canvas.width = canvasWrapper.offsetWidth;
+    canvas.height = canvasWrapper.offsetHeight;
+
+    updateParameters();
 };
 
 const update = timeStep => {

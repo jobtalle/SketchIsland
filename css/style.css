@@ -8,6 +8,7 @@
     --color-mountain-end: #3e352d;
     --color-volcano-surface: #ca532b;
     --color-volcano-deep: #d6b445;
+    --loader-size: 18px;
 }
 
 body {
@@ -32,14 +33,37 @@ body {
 }
 
 #wrapper #loader {
-    background-color: #b7504a;
+    background-color: #585858;
     width: 100%;
-    height: 24px;
+    height: var(--loader-size);
     border-top: 1px solid var(--color-mountain-end);
-    flex-grow: 0;
 }
 
 #wrapper #loader #loaded {
+    width: 0;
     height: 100%;
-    background-color: #45bf44;
+    background-color: var(--color-grass-start);
+    border-right: 1px solid var(--color-mountain-end);
+}
+
+#wrapper #controls-wrapper {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#wrapper #controls-wrapper #controls {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.62);
+    padding: 8px;
+}
+
+#wrapper #controls-wrapper #controls select {
+    width: 100%;
+}
+
+#wrapper #controls-wrapper #controls button {
+    width: 100%;
 }

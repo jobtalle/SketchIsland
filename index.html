@@ -18,6 +18,40 @@
         <div id="loader">
             <div id="loaded"></div>
         </div>
+        <div id="controls-wrapper">
+            <div id="controls">
+                <table>
+                    <tr>
+                        <td>Quality</td>
+                        <td>
+                            <select onchange="console.log(scale=this.value);updateParameters();replan()">
+                                <option value="4">Very low</option>
+                                <option value="3">Low</option>
+                                <option value="2.5">Medium</option>
+                                <option selected="selected" value="2">High</option>
+                                <option value="1">Very high</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Render mode</td>
+                        <td>
+                            <select>
+                                <option value="canvas">Canvas</option>
+                                <option value="css">CSS</option>
+                                <option value="webgl">WebGL</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button onclick="replan()">Generate</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
     <script src="js/loader.js"></script>
     <script src="js/bufferedCubicNoise.js"></script>

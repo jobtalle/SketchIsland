@@ -74,4 +74,4 @@ const Island = function(lighting) {
     };
 };
 
-Island.GEN_RATE = 1 / 30;
+Island.GEN_RATE = 1 / 60;
