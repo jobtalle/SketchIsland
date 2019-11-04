@@ -1,6 +1,6 @@
 const Heightmap = function(size) {
     const heights = new Array(size * size);
-    const normals = new Array(heights.length).fill(Heightmap.NORMAL_EDGE);
+    const normals = new Array(heights.length);
     const types = new Array(heights.length);
 
     const calculateNormals = () => {
@@ -21,6 +21,12 @@ const Heightmap = function(size) {
 
             normals[index] = normal.normalize();
         }
+
+        for (let x = 0; x < size; ++x)
+            normals[x] = normals[size * size - size + x] = Heightmap.NORMAL_EDGE;
+
+        for (let y = 1; y < size - 1; ++y)
+            normals[y * size] = normals[y * size + size - 1] = Heightmap.NORMAL_EDGE;
     };
 
     const fill = () => {

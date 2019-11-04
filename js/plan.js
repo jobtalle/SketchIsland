@@ -8,4 +8,6 @@ const Plan = function(size, height) {
     this.getShapes = () => shapes;
 
     new Trees(size, height, heightmap, shapes).plant();
+
+    shapes.add(new ShapeHeightmap(heightmap, height, Island.GRADIENTS[0], Island.GRADIENTS[1]));
 };

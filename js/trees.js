@@ -1,6 +1,6 @@
 const Trees = function(size, height, heightmap, shapes) {
     this.plant = () => {
-        for (let i = 0; i < 1000; ++i) {
+        for (let i = 0; i < 3000; ++i) {
             const x = Math.floor(Math.random() * size);
             const y = Math.floor(Math.random() * size);
             const h = heightmap.getHeight(x, y);

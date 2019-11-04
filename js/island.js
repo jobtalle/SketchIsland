@@ -2,45 +2,32 @@ const Island = function(lighting, plan) {
     let layers = null;
 
     const renderLayers = () => {
+        const size = plan.getSize();
+
         for (let z = 0; z < plan.getHeight(); ++z) {
             const context = layers[z].getContext("2d");
             const data = context.createImageData(plan.getSize(), plan.getSize());
-            let gradientType = -1;
-            let color, r, g, b;
 
-            for (let y = 0; y < plan.getSize(); ++y) for (let x = 0; x < plan.getSize(); ++x) {
-                const i = x + y * plan.getSize() << 2;
+            for (let y = 0; y < size; ++y) {
+                for (let x = 0; x < size; ++x) {
+                    for (const shape of plan.getShapes().get(x, y, z)) {
+                        if (!shape.bounds || shape.bounds.contains(x, y, z)) {
+                            const index = x + y * size << 2;
+                            const sample = shape.sample(x, y, z);
 
-                if (plan.getHeightmap().getHeight(x, y) > z / plan.getHeight()) {
-                    const type = plan.getHeightmap().getType(x, y);
-                    const l = lighting.get(plan.getHeightmap().getNormal(x, y));
+                            if (!sample)
+                                continue;
 
-                    if (gradientType !== type) {
-                        gradientType = type;
-                        color = Island.GRADIENTS[type].sample(z / plan.getHeight());
-                        r = Math.floor(color.r * 256);
-                        g = Math.floor(color.g * 256);
-                        b = Math.floor(color.b * 256);
+                            const l = lighting.get(sample.normal);
+
+                            data.data[index] = Math.min(Math.round(Math.floor(sample.color.r * 255) * l), 255);
+                            data.data[index + 1] = Math.min(Math.round(Math.floor(sample.color.g * 255) * l), 255);
+                            data.data[index + 2] = Math.min(Math.round(Math.floor(sample.color.b * 255) * l), 255);
+                            data.data[index + 3] = 255;
+
+                            break; // TODO: Continue if alpha is not 1
+                        }
                     }
-
-                    data.data[i] = Math.min(Math.round(r * l), 255);
-                    data.data[i + 1] = Math.min(Math.round(g * l), 255);
-                    data.data[i + 2] = Math.min(Math.round(b * l), 255);
-                    data.data[i + 3] = 255;
-                }
-
-                for (const shape of plan.getShapes().get(x, y, z)) if (shape.bounds.contains(x, y, z)) {
-                    const sample = shape.sample(x, y, z);
-
-                    if (!sample)
-                        continue;
-
-                    const l = lighting.get(sample.normal);
-
-                    data.data[i] = Math.min(Math.round(Math.floor(sample.color.r * 255) * l), 255);
-                    data.data[i + 1] = Math.min(Math.round(Math.floor(sample.color.g * 255) * l), 255);
-                    data.data[i + 2] = Math.min(Math.round(Math.floor(sample.color.b * 255) * l), 255);
-                    data.data[i + 3] = 255;
                 }
             }
 
