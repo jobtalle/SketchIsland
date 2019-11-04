@@ -2,7 +2,7 @@ const ShapeHeightmap = function(heightmap, height) {
     const colorsDefault = new Array(height);
     const colorsVolcano = new Array(height);
 
-    this.bounds = null;
+    this.bounds = heightmap.getBounds(height);
 
     this.sample = (x, y, z) => {
         const h = heightmap.getHeight(x, y) * height;

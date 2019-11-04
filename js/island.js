@@ -19,9 +19,9 @@ const Island = function(lighting, plan) {
                         shapes = plan.getShapes().get(x, y, z);
                     }
 
-                    for (const shape of shapes) {
-                        if (!shape.bounds || shape.bounds.contains(x, y, z)) {
-                            const sample = shape.sample(x, y, z);
+                    for (let shape = 0; shape < shapes.length; ++shape) {
+                        if (shapes[shape].bounds.contains(x, y, z)) {
+                            const sample = shapes[shape].sample(x, y, z);
 
                             if (!sample)
                                 continue;
@@ -33,7 +33,7 @@ const Island = function(lighting, plan) {
                             data.data[index + 2] = Math.min(Math.round(sample.color.b * l), 255);
                             data.data[index + 3] = 255;
 
-                            break; // TODO: Continue if alpha is not 1
+                            break;
                         }
                     }
 

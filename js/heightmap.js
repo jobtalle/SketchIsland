@@ -2,6 +2,11 @@ const Heightmap = function(size) {
     const heights = new Array(size * size);
     const normals = new Array(heights.length);
     const types = new Array(heights.length);
+    let xMin = size;
+    let xMax = 0;
+    let yMin = size;
+    let yMax = 0;
+    let zMax = 0;
 
     const calculateNormals = () => {
         const step = 1 / size;
@@ -29,10 +34,8 @@ const Heightmap = function(size) {
             normals[y * size] = normals[y * size + size - 1] = Heightmap.NORMAL_EDGE;
     };
 
-    const fill = () => {
+    const makeNoises = maxScale => {
         const noises = new Array(Heightmap.OCTAVES);
-        const maxScale = (1 / size) * Heightmap.SCALE;
-
         let s = maxScale;
 
         for (let i = 0; i < Heightmap.OCTAVES; ++i) {
@@ -40,6 +43,13 @@ const Heightmap = function(size) {
 
             s *= Heightmap.SCALE_FALLOFF;
         }
+
+        return noises;
+    };
+
+    const fill = () => {
+        const maxScale = (1 / size) * Heightmap.SCALE;
+        const noises = makeNoises(maxScale);
 
         for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
             const index = x + y * size;
@@ -73,14 +83,35 @@ const Heightmap = function(size) {
                 types[index] = Heightmap.TYPE_DEFAULT;
 
             heights[index] = Math.max(0, height);
+
+            if (heights[index] !== 0) {
+                if (x < xMin)
+                    xMin = x;
+
+                if (x > xMax)
+                    xMax = x;
+
+                if (y < yMin)
+                    yMin = y;
+
+                if (y > yMax)
+                    yMax = y;
+
+                if (heights[index] > zMax)
+                    zMax = heights[index];
+            }
         }
 
         calculateNormals();
     };
 
+    this.getSize = () => size;
     this.getHeight = (x, y) => heights[x + size * y];
     this.getNormal = (x, y) => normals[x + size * y];
     this.getType = (x, y) => types[x + size * y];
+    this.getBounds = height => new Bounds(
+        new Vector3(Math.floor(xMin), Math.floor(yMin), 0),
+        new Vector3(Math.ceil(xMax), Math.ceil(yMax), Math.ceil(zMax * height)));
 
     fill();
 };
