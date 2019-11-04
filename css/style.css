@@ -28,6 +28,20 @@ body {
     flex-grow: 1;
 }
 
+#wrapper #canvas-wrapper #div-renderer {
+    position: absolute;
+    overflow: hidden;
+}
+
+#wrapper #canvas-wrapper #div-renderer #slice-container {
+    transform-origin: left top;
+}
+
+#wrapper #canvas-wrapper #div-renderer #slice-container .slice {
+    position: absolute;
+    transform-origin: left top;
+}
+
 #wrapper #canvas-wrapper #renderer {
     position: absolute;
 }
@@ -51,6 +65,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: row;
+    user-select: none;
 }
 
 #wrapper #controls-wrapper #controls {

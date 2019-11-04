@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:site" content="@jobtalle"/>
@@ -13,6 +13,7 @@
 <body>
     <div id="wrapper">
         <div id="canvas-wrapper">
+            <div id="div-renderer"></div>
             <canvas id="renderer"></canvas>
         </div>
         <div id="loader">
@@ -24,23 +25,26 @@
                     <tr>
                         <td>Quality</td>
                         <td>
-                            <select onchange="console.log(scale=this.value);updateParameters();replan()">
-                                <option value="4">Very low</option>
-                                <option value="3">Low</option>
-                                <option value="2.5">Medium</option>
-                                <option selected="selected" value="2">High</option>
-                                <option value="1">Very high</option>
-                            </select>
+                            <label>
+                                <select onchange="scale = this.value; updateParameters(); replan()">
+                                    <option value="4">Very low</option>
+                                    <option value="3">Low</option>
+                                    <option value="2.5">Medium</option>
+                                    <option selected="selected" value="2">High</option>
+                                    <option value="1.5">Very high</option>
+                                </select>
+                            </label>
                         </td>
                     </tr>
                     <tr>
                         <td>Render mode</td>
                         <td>
-                            <select>
-                                <option value="canvas">Canvas</option>
-                                <option value="css">CSS</option>
-                                <option value="webgl">WebGL</option>
-                            </select>
+                            <label>
+                                <select onchange="renderer.setType(this.value); updateParameters()">
+                                    <option selected="selected" value="canvas">Canvas</option>
+                                    <option value="css">CSS</option>
+                                </select>
+                            </label>
                         </td>
                     </tr>
                     <tr>
@@ -70,6 +74,8 @@
     <script src="js/plan.js"></script>
     <script src="js/island.js"></script>
     <script src="js/renderer/rendererCanvas.js"></script>
+    <script src="js/renderer/rendererCSS.js"></script>
+    <script src="js/renderer/renderer.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -8,8 +8,9 @@ const island = new Island(new Lighting());
 const loader = new Loader(document.getElementById("loader"));
 const canvasWrapper = document.getElementById("canvas-wrapper");
 const canvas = document.getElementById("renderer");
+const divRenderer = document.getElementById("div-renderer");
+const renderer = new Renderer(canvas, divRenderer);
 let lastDate = new Date();
-let renderer = null;
 let size = 0;
 let height = 0;
 let angle = Math.PI * 0.5;
@@ -23,13 +24,16 @@ let xDrag = 0;
 const updateParameters = () => {
     size = Math.floor(canvas.width * X_FILL / scale);
     height = Math.ceil(size * HEIGHT_RATIO);
-    renderer = new RendererCanvas(island, canvas);
     updated = true;
+
+    renderer.update(island); // TODO: This shouldn't be necessary, it resets the entire renderer every time
 };
 
 const resize = () => {
     canvas.width = canvasWrapper.offsetWidth;
     canvas.height = canvasWrapper.offsetHeight;
+    divRenderer.style.width = canvas.width + "px";
+    divRenderer.style.height = canvas.height + "px";
 
     updateParameters();
 };
@@ -38,8 +42,11 @@ const update = timeStep => {
     if (!island.isReady()) {
         loader.update(island.generate());
 
-        if (island.isReady())
+        if (island.isReady()) {
             updated = true;
+
+            renderer.update(island);
+        }
     }
 
     if (updated || (!dragging && angleDelta !== 0)) {
@@ -67,7 +74,7 @@ const loopFunction = () => {
 
 const replan = () => {
     loader.update(0);
-    island.setPlan(new Plan(size, height));
+    island.setPlan(new Plan(size, height, 1 / scale));
 };
 
 const mouseDown = (x, y, drag) => {
@@ -113,6 +120,6 @@ canvas.addEventListener("mouseup", event =>
 canvas.addEventListener("touchend", event =>
     mouseUp());
 
-resize();
 requestAnimationFrame(loopFunction);
+resize();
 replan();
