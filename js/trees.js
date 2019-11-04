@@ -1,4 +1,4 @@
-const Trees = function(size, height, heightmap, lighting, shapes) {
+const Trees = function(size, height, heightmap, shapes) {
     this.plant = () => {
         for (let i = 0; i < 1000; ++i) {
             const x = Math.floor(Math.random() * size);
@@ -12,7 +12,7 @@ const Trees = function(size, height, heightmap, lighting, shapes) {
             const radius = 4 + Math.random() * 2;
             const tall = radius * 2;
 
-            shapes.push(new ShapeCone(new Vector3(x, y, z), radius, tall, Trees.COLOR_PINE));
+            shapes.add(new ShapeCone(new Vector3(x, y, z), radius, tall, Trees.COLOR_PINE));
         }
     };
 };
