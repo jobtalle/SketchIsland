@@ -1,5 +1,5 @@
 const RendererCanvas = function(island, canvas) {
-    this.render = (angle, pitch) => {
+    this.render = (angle, pitch, scale) => {
         const context = canvas.getContext("2d");
 
         context.imageSmoothingEnabled = true;
@@ -9,10 +9,10 @@ const RendererCanvas = function(island, canvas) {
 
         for (let z = 0; z < island.getPlan().getHeight(); ++z) {
             context.save();
-            context.translate(0, (island.getPlan().getHeight() * 0.5 - z) * Island.SCALE);
+            context.translate(0, (island.getPlan().getHeight() * 0.5 - z) * scale);
             context.scale(1, pitch);
             context.rotate(angle);
-            context.scale(Island.SCALE, Island.SCALE);
+            context.scale(scale, scale);
             context.drawImage(island.getLayers()[z], island.getPlan().getSize() * -0.5, island.getPlan().getSize() * -0.5);
             context.restore();
         }

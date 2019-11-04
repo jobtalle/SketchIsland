@@ -66,6 +66,3 @@ const Island = function(lighting, plan) {
 
     this.setPlan(plan);
 };
-
-Island.SCALE = 2.5;
-Island.Y_SCALE = 0.4;

@@ -13,6 +13,7 @@ let size = 0;
 let height = 0;
 let angle = 0;
 let pitch = 0.4;
+let scale = 2.5;
 let angleDelta = ANGLE_SPEED;
 let updated = false;
 let dragging = false;
@@ -22,7 +23,7 @@ let timeStepLast = 0;
 const resize = () => {
     canvas.width = wrapper.offsetWidth;
     canvas.height = wrapper.offsetHeight;
-    size = Math.floor(canvas.width * X_FILL / Island.SCALE);
+    size = Math.floor(canvas.width * X_FILL / scale);
     height = Math.ceil(size * HEIGHT_RATIO);
     island = new Island(lighting, new Plan(size, height));
     renderer = new RendererCanvas(island, canvas);
@@ -37,7 +38,7 @@ const update = timeStep => {
             else if (angle < 0)
                 angle += Math.PI + Math.PI;
 
-        renderer.render(angle, pitch);
+        renderer.render(angle, pitch, scale);
 
         updated = false;
     }
