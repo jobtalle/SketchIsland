@@ -25,8 +25,6 @@ const updateParameters = () => {
     size = Math.floor(canvas.width * X_FILL / scale);
     height = Math.ceil(size * HEIGHT_RATIO);
     updated = true;
-
-    renderer.update(island); // TODO: This shouldn't be necessary, it resets the entire renderer every time
 };
 
 const resize = () => {

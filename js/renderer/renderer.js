@@ -28,7 +28,10 @@ const Renderer = function(canvas, element) {
     this.update = newIsland => {
         island = newIsland;
 
-        instantiate();
+        if (!current)
+            instantiate();
+
+        current.setIsland(island);
     };
 
     this.resize = (width, height) => {
