@@ -36,6 +36,18 @@ Vector3.prototype.add = function(vector) {
     return this;
 };
 
+Vector3.prototype.subtract = function(vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
+    this.z -= vector.z;
+
+    return this;
+};
+
+Vector3.prototype.copy = function() {
+    return new Vector3(this.x, this.y, this.z);
+};
+
 Vector3.prototype.cross = function(vector) {
     return new Vector3(
         this.y * vector.z - this.z * vector.y,
