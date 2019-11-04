@@ -6,7 +6,7 @@ const TIME_STEP_MAX = 0.1;
 
 const island = new Island(new Lighting());
 const loader = new Loader(document.getElementById("loader"));
-const wrapper = document.getElementById("wrapper");
+const canvasWrapper = document.getElementById("canvas-wrapper");
 const canvas = document.getElementById("renderer");
 let lastDate = new Date();
 let renderer = null;
@@ -21,8 +21,8 @@ let dragging = false;
 let xDrag = 0;
 
 const resize = () => {
-    canvas.width = wrapper.offsetWidth;
-    canvas.height = wrapper.offsetHeight;
+    canvas.width = canvasWrapper.offsetWidth;
+    canvas.height = canvasWrapper.offsetHeight;
     size = Math.floor(canvas.width * X_FILL / scale);
     height = Math.ceil(size * HEIGHT_RATIO);
     renderer = new RendererCanvas(island, canvas);
@@ -61,6 +61,7 @@ const loopFunction = () => {
 };
 
 const replan = () => {
+    loader.update(0);
     island.setPlan(new Plan(size, height));
 };
 
