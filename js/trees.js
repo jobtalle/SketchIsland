@@ -19,7 +19,7 @@ const Trees = function(size, height, heightmap, bounds, lighting, scale) {
                 if (heightmap.getNormal(plantX, plantY).dot(Trees.DIRECTION) < Trees.DOT_MIN)
                     continue;
 
-                const radius = (Trees.RADIUS_MIN + (Trees.RADIUS_MAX - Trees.RADIUS_MIN) * Math.random()) * scale;
+                const radius = (Trees.RADIUS_MIN + (Trees.RADIUS_MAX - Trees.RADIUS_MIN) * Math.random() * (1 - heightFactor)) * scale;
                 const tall = radius * (Trees.HEIGHT_FACTOR_MIN + (Trees.HEIGHT_FACTOR_MAX - Trees.HEIGHT_FACTOR_MIN) * Math.random());
                 const l = lighting.getAmbient(heightmap.getNormal(plantX, plantY), Trees.AMBIENT);
 
@@ -35,7 +35,7 @@ const Trees = function(size, height, heightmap, bounds, lighting, scale) {
 
 Trees.VOLUME_DENSITY = 0.5;
 Trees.RADIUS_MIN = 8;
-Trees.RADIUS_MAX = 16;
+Trees.RADIUS_MAX = 18;
 Trees.HEIGHT_FACTOR_MIN = 1.8;
 Trees.HEIGHT_FACTOR_MAX = 2.5;
 Trees.SPACING = Trees.RADIUS_MIN * 1.75;
