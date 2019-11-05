@@ -19,7 +19,7 @@ const RendererCanvas = function(island, canvas) {
         context.save();
         context.translate(canvas.width * 0.5, canvas.height * 0.5);
 
-        for (let z = 0; z < island.getPlan().getHeight(); ++z) {
+        for (let z = 0; z < island.getLayers().length; ++z) {
             const layer = island.getLayers()[z];
 
             context.save();

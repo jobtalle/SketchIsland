@@ -15,7 +15,7 @@ const RendererWebGL = function(island, canvas) {
     const make = () => {
         clear();
 
-        for (let z = 0; z < island.getPlan().getHeight(); ++z) {
+        for (let z = 0; z < island.getLayers().length; ++z) {
             const layer = island.getLayers()[z];
             const context = layer.canvas.getContext("2d");
             const data = context.getImageData(0, 0, layer.canvas.width, layer.canvas.height);
@@ -47,7 +47,7 @@ const RendererWebGL = function(island, canvas) {
 
         myr.translate(myr.getWidth() * 0.5, myr.getHeight() * 0.5);
 
-        for (let z = 0; z < island.getPlan().getHeight(); ++z) {
+        for (let z = 0; z < island.getLayers().length; ++z) {
             const layer = island.getLayers()[z];
 
             myr.push();

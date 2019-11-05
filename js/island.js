@@ -14,8 +14,6 @@ const Island = function(lighting) {
             let yMin = plan.getSize();
             let yMax = 0;
 
-            //layers[z].width = layers[z].height = plan.getSize();
-
             const canvas = document.createElement("canvas");
             const context = canvas.getContext("2d");
             const data = context.createImageData(plan.getSize(), plan.getSize());
@@ -69,7 +67,8 @@ const Island = function(lighting) {
             canvas.height = yMax - yMin;
             context.putImageData(data, -xMin, -yMin);
 
-            layers.push(new Layer(xMin, yMin, canvas));
+            if (xMin < xMax)
+                layers.push(new Layer(xMin, yMin, canvas));
 
             if (++z === plan.getHeight()) {
                 ready = true;

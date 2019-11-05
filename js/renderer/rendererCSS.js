@@ -18,7 +18,7 @@ const RendererCSS = function(island, element) {
         slices = new Array(island.getPlan().getHeight());
         origins = new Array(slices.length);
 
-        for (let z = 0; z < island.getPlan().getHeight(); ++z) {
+        for (let z = 0; z < island.getLayers().length; ++z) {
             container.appendChild(slices[z] = makeSlice(island.getLayers()[z], z));
 
             origins[z] = "translate(" + island.getLayers()[z].x + "px," + island.getLayers()[z].y + "px)";
@@ -48,7 +48,7 @@ const RendererCSS = function(island, element) {
 
         container.style.transform = "translate( " + (element.clientWidth * 0.5) + "px," + (element.clientHeight * 0.5) + "px) scale(" + scale + ")";
 
-        for (let z = 0; z < island.getPlan().getHeight(); ++z)
+        for (let z = 0; z < island.getLayers().length; ++z)
             slices[z].style.transform = sliceTransform + origins[z];
     };
 
