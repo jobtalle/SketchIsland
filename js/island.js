@@ -66,7 +66,7 @@ const Island = function(lighting) {
             const width = xMax - xMin;
             const height = yMax - yMin;
 
-            if (width >= 0 && height >= 0) {
+            if (width > 0 && height > 0) {
                 canvas.width = width;
                 canvas.height = height;
                 context.putImageData(data, -xMin, -yMin);
