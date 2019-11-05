@@ -1,10 +1,6 @@
 const RendererWebGL = function(island, canvas) {
     const myr = new Myr(canvas, false, true);
     const surfaces = [];
-    const clearColor = new Myr.Color(
-        RendererWebGL.CLEAR_COLOR.r,
-        RendererWebGL.CLEAR_COLOR.g,
-        RendererWebGL.CLEAR_COLOR.b);
 
     const clear = () => {
         for (const surface of surfaces)
@@ -12,10 +8,8 @@ const RendererWebGL = function(island, canvas) {
 
         surfaces.length = 0;
 
-        myr.setClearColor(new Myr.Color(0, 0, 0, 0));
         myr.clear();
         myr.flush();
-        myr.setClearColor(clearColor);
     };
 
     const make = () => {
@@ -73,7 +67,7 @@ const RendererWebGL = function(island, canvas) {
         myr.flush();
     };
 
+    myr.setClearColor(new Myr.Color(0, 0, 0, 0));
+
     make();
 };
-
-RendererWebGL.CLEAR_COLOR = StyleUtils.getColor("--color-ocean");
