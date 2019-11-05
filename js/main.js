@@ -8,9 +8,10 @@ const TIME_STEP_MAX = 0.1;
 const island = new Island(new Lighting());
 const loader = new Loader(document.getElementById("loader"));
 const canvasWrapper = document.getElementById("canvas-wrapper");
-const canvas = document.getElementById("renderer");
+const canvasWebgl = document.getElementById("renderer-webgl");
+const canvas2d = document.getElementById("renderer-2d");
 const divRenderer = document.getElementById("div-renderer");
-const renderer = new Renderer(canvas, divRenderer);
+const renderer = new Renderer(canvas2d, canvasWebgl, divRenderer);
 let lastDate = new Date();
 let size = 0;
 let height = 0;
@@ -24,17 +25,17 @@ let xDrag = 0;
 
 const updateParameters = () => {
     size = Math.min(
-        Math.floor(canvas.width * X_FILL / scale),
-        Math.floor((canvas.height * Y_FILL / pitch) / scale));
+        Math.floor(canvas2d.width * X_FILL / scale),
+        Math.floor((canvas2d.height * Y_FILL / pitch) / scale));
     height = Math.ceil(size * HEIGHT_RATIO);
     updated = true;
 };
 
 const resize = () => {
-    canvas.width = canvasWrapper.offsetWidth;
-    canvas.height = canvasWrapper.offsetHeight;
-    divRenderer.style.width = canvas.width + "px";
-    divRenderer.style.height = canvas.height + "px";
+    canvas2d.width = canvasWebgl.width = canvasWrapper.offsetWidth;
+    canvas2d.height = canvasWebgl.height = canvasWrapper.offsetHeight;
+    divRenderer.style.width = canvas2d.width + "px";
+    divRenderer.style.height = canvas2d.height + "px";
 
     updateParameters();
 };
@@ -108,17 +109,17 @@ const mouseMove = (x, y) => {
 
 window.onresize = resize;
 
-canvas.addEventListener("mousedown", event =>
+canvas2d.addEventListener("mousedown", event =>
     mouseDown(event.clientX, event.clientY, event.button === 0));
-canvas.addEventListener("touchstart", event =>
+canvas2d.addEventListener("touchstart", event =>
     mouseDown(event.touches[0].clientX, event.touches[0].clientY, true));
-canvas.addEventListener("mousemove", event =>
+canvas2d.addEventListener("mousemove", event =>
     mouseMove(event.clientX, event.clientY));
-canvas.addEventListener("touchmove", event =>
+canvas2d.addEventListener("touchmove", event =>
     mouseMove(event.touches[0].clientX, event.touches[0].clientY));
-canvas.addEventListener("mouseup", event =>
+canvas2d.addEventListener("mouseup", event =>
     mouseUp());
-canvas.addEventListener("touchend", event =>
+canvas2d.addEventListener("touchend", event =>
     mouseUp());
 
 requestAnimationFrame(loopFunction);

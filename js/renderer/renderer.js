@@ -1,4 +1,4 @@
-const Renderer = function(canvas, element) {
+const Renderer = function(canvas2d, canvas3d, element) {
     let island = null;
     let current = null;
     let type = Renderer.TYPE_DEFAULT;
@@ -9,11 +9,15 @@ const Renderer = function(canvas, element) {
 
         switch (type) {
             case Renderer.TYPE_CANVAS:
-                current = new RendererCanvas(island, canvas);
+                current = new RendererCanvas(island, canvas2d);
 
                 break;
             case Renderer.TYPE_CSS:
                 current = new RendererCSS(island, element);
+
+                break;
+            case Renderer.TYPE_WEBGL:
+                current = new RendererWebGL(island, canvasWebgl);
 
                 break;
         }
@@ -45,4 +49,5 @@ const Renderer = function(canvas, element) {
 
 Renderer.TYPE_CANVAS = "canvas";
 Renderer.TYPE_CSS = "css";
+Renderer.TYPE_WEBGL = "webgl";
 Renderer.TYPE_DEFAULT = Renderer.TYPE_CANVAS;

@@ -3,7 +3,7 @@ const RendererCSS = function(island, element) {
 
     const makeSlice = (canvas, z) => {
         const element = document.createElement("div");
-
+        // TODO: Maybe don't wrap a useless div around it
         element.className = RendererCSS.CLASS_SLICE;
         element.appendChild(canvas);
         element.style.top = (island.getPlan().getHeight() * 0.5 - z) + "px";

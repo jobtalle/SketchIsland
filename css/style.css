@@ -42,7 +42,11 @@ body {
     transform-origin: left top;
 }
 
-#wrapper #canvas-wrapper #renderer {
+#wrapper #canvas-wrapper #renderer-2d {
+    position: absolute;
+}
+
+#wrapper #canvas-wrapper #renderer-webgl {
     position: absolute;
 }
 
