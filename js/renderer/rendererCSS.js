@@ -12,6 +12,9 @@ const RendererCSS = function(island, element) {
     const make = () => {
         this.clean();
 
+        if (island === null)
+            return;
+
         container = document.createElement("div");
         container.id = RendererCSS.ID_CONTAINER;
 

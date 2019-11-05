@@ -15,6 +15,9 @@ const RendererWebGL = function(island, canvas) {
     const make = () => {
         clear();
 
+        if (island === null)
+            return;
+
         for (let z = 0; z < island.getLayers().length; ++z) {
             const layer = island.getLayers()[z];
             const context = layer.canvas.getContext("2d");
