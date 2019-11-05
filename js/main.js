@@ -1,7 +1,7 @@
 const ANGLE_SPEED = 0.3;
 const DRAG_SPEED = 0.006;
 const X_FILL = 1;
-const Y_FILL = 0.75;
+const Y_FILL = 0.65;
 const HEIGHT_RATIO = 0.18;
 const TIME_STEP_MAX = 0.1;
 

@@ -12,7 +12,8 @@ const Gradient = function(stops) {
         return new Color(
             first.color.r * (1 - factor) + last.color.r * factor,
             first.color.g * (1 - factor) + last.color.g * factor,
-            first.color.b * (1 - factor) + last.color.b * factor);
+            first.color.b * (1 - factor) + last.color.b * factor,
+            first.color.a * (1 - factor) + last.color.a * factor);
     };
 };
 

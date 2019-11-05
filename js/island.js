@@ -41,7 +41,7 @@ const Island = function(lighting) {
                             data.data[index] = Math.min(Math.round(sample.color.r * l), 255);
                             data.data[index + 1] = Math.min(Math.round(sample.color.g * l), 255);
                             data.data[index + 2] = Math.min(Math.round(sample.color.b * l), 255);
-                            data.data[index + 3] = 255;
+                            data.data[index + 3] = Math.round(sample.color.a * 255);
 
                             if (x < xMin)
                                 xMin = x;

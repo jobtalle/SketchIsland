@@ -20,6 +20,14 @@ const RendererWebGL = function(island, canvas) {
             const context = layer.canvas.getContext("2d");
             const data = context.getImageData(0, 0, layer.canvas.width, layer.canvas.height);
 
+            for (let i = 0; i < data.data.length; i += 4) {
+                const alpha = data.data[i + 3] / 255;
+
+                data.data[i] = Math.round(data.data[i] * alpha);
+                data.data[i + 1] = Math.round(data.data[i + 1] * alpha);
+                data.data[i + 2] = Math.round(data.data[i + 2] * alpha);
+            }
+
             surfaces.push(new myr.Surface(layer.canvas.width, layer.canvas.height, data.data, true, false));
         }
     };
