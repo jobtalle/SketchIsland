@@ -3,6 +3,8 @@ const Renderer = function(canvas2d, canvas3d, element) {
     let current = null;
     let type = Renderer.TYPE_DEFAULT;
 
+    this.supportsWebGL = canvas3d.getContext("webgl2") !== null;
+
     const instantiate = () => {
         if (current)
             current.clean();

@@ -23,6 +23,12 @@ let updated = false;
 let dragging = false;
 let xDrag = 0;
 
+if (!renderer.supportsWebGL) {
+    const webGlOption = document.getElementById("option-webgl");
+
+    webGlOption.parentElement.removeChild(webGlOption);
+}
+
 const updateParameters = () => {
     size = Math.min(
         Math.floor(canvas2d.width * X_FILL / scale),
