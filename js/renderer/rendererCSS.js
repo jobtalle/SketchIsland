@@ -1,5 +1,6 @@
 const RendererCSS = function(island, element) {
-    let container, slices, origins;
+    let container = null;
+    let slices, origins;
 
     const makeSlice = (layer, z) => {
         layer.canvas.className = RendererCSS.CLASS_SLICE;
@@ -18,7 +19,7 @@ const RendererCSS = function(island, element) {
         container = document.createElement("div");
         container.id = RendererCSS.ID_CONTAINER;
 
-        slices = new Array(island.getPlan().getHeight());
+        slices = new Array(island.getLayers().length);
         origins = new Array(slices.length);
 
         for (let z = 0; z < island.getLayers().length; ++z) {
@@ -37,8 +38,8 @@ const RendererCSS = function(island, element) {
     };
 
     this.clean = () => {
-        while (element.firstChild)
-            element.removeChild(element.firstChild);
+        if (container)
+            element.removeChild(container);
     };
 
     this.resize = () => {
