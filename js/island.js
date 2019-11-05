@@ -63,12 +63,22 @@ const Island = function(lighting) {
                 }
             }
 
-            canvas.width = xMax - xMin;
-            canvas.height = yMax - yMin;
-            context.putImageData(data, -xMin, -yMin);
+            const width = xMax - xMin;
+            const height = yMax - yMin;
 
-            if (xMin < xMax)
+            if (width !== 0 && height !== 0) {
+                canvas.width = width;
+                canvas.height = height;
+                context.putImageData(data, -xMin, -yMin);
+
                 layers.push(new Layer(xMin, yMin, canvas));
+            }
+            else {
+                z = plan.getHeight();
+                ready = true;
+
+                break;
+            }
 
             if (++z === plan.getHeight()) {
                 ready = true;
