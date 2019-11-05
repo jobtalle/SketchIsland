@@ -1,15 +1,12 @@
 const RendererCSS = function(island, element) {
-    let container, slices;
+    let container, slices, origins;
 
     const makeSlice = (layer, z) => {
-        const element = document.createElement("div");
-        // TODO: Maybe don't wrap a useless div around it
-        element.className = RendererCSS.CLASS_SLICE;
-        element.appendChild(layer.canvas);
-        element.style.top = (island.getPlan().getHeight() * 0.5 - z) + "px";
-        element.style.transform = "scale(0)";
+        layer.canvas.className = RendererCSS.CLASS_SLICE;
+        layer.canvas.style.top = (island.getPlan().getHeight() * 0.5 - z) + "px";
+        layer.canvas.style.transform = "scale(0)";
 
-        return element;
+        return layer.canvas;
     };
 
     const make = () => {
@@ -19,9 +16,13 @@ const RendererCSS = function(island, element) {
         container.id = RendererCSS.ID_CONTAINER;
 
         slices = new Array(island.getPlan().getHeight());
+        origins = new Array(slices.length);
 
-        for (let z = 0; z < island.getPlan().getHeight(); ++z)
+        for (let z = 0; z < island.getPlan().getHeight(); ++z) {
             container.appendChild(slices[z] = makeSlice(island.getLayers()[z], z));
+
+            origins[z] = "translate(" + island.getLayers()[z].x + "px," + island.getLayers()[z].y + "px)";
+        }
 
         element.appendChild(container);
     };
@@ -48,7 +49,7 @@ const RendererCSS = function(island, element) {
         container.style.transform = "translate( " + (element.clientWidth * 0.5) + "px," + (element.clientHeight * 0.5) + "px) scale(" + scale + ")";
 
         for (let z = 0; z < island.getPlan().getHeight(); ++z)
-            slices[z].style.transform = sliceTransform + "translate(" + island.getLayers()[z].x + "px," + island.getLayers()[z].y + "px)";
+            slices[z].style.transform = sliceTransform + origins[z];
     };
 
     make();
