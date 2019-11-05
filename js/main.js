@@ -1,6 +1,7 @@
 const ANGLE_SPEED = 0.3;
 const DRAG_SPEED = 0.006;
 const X_FILL = 1;
+const Y_FILL = 0.75;
 const HEIGHT_RATIO = 0.18;
 const TIME_STEP_MAX = 0.1;
 
@@ -22,7 +23,9 @@ let dragging = false;
 let xDrag = 0;
 
 const updateParameters = () => {
-    size = Math.floor(canvas.width * X_FILL / scale);
+    size = Math.min(
+        Math.floor(canvas.width * X_FILL / scale),
+        Math.floor((canvas.height * Y_FILL / pitch) / scale));
     height = Math.ceil(size * HEIGHT_RATIO);
     updated = true;
 };
