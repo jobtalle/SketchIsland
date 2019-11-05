@@ -5,7 +5,8 @@ const Y_FILL = 0.65;
 const HEIGHT_RATIO = 0.18;
 const TIME_STEP_MAX = 0.1;
 
-const island = new Island(new Lighting());
+const lighting = new Lighting();
+const island = new Island(lighting);
 const loader = new Loader(document.getElementById("loader"));
 const canvasWrapper = document.getElementById("canvas-wrapper");
 const canvasWebgl = document.getElementById("renderer-webgl");
@@ -84,7 +85,7 @@ const loopFunction = () => {
 
 const replan = () => {
     loader.update(0);
-    island.setPlan(new Plan(size, height, 1 / scale));
+    island.setPlan(new Plan(size, height, 1 / scale, lighting));
 };
 
 const mouseDown = (x, y, drag) => {

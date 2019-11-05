@@ -1,4 +1,4 @@
-const ShapeCone = function(origin, radius, height, color) {
+const ShapeCone = function(origin, radius, height, color, density) {
     const angle = Math.atan2(height, radius);
     const nz = Math.cos(angle);
     const fh = Math.sin(angle);
@@ -14,6 +14,9 @@ const ShapeCone = function(origin, radius, height, color) {
             Math.ceil(origin.z + height)));
 
     this.sample = (x, y, z) => {
+        if (density !== 1 && density < Math.random())
+            return null;
+
         const dx = x - origin.x;
         const dy = y - origin.y;
         const dz = z - origin.z;
