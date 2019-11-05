@@ -9,9 +9,15 @@ const Island = function(lighting) {
         const size = plan.getSize();
 
         while ((new Date() - startTime) * 0.001 < Island.GEN_RATE) {
-            layers[z].width = layers[z].height = plan.getSize();
+            let xMin = plan.getSize();
+            let xMax = 0;
+            let yMin = plan.getSize();
+            let yMax = 0;
 
-            const context = layers[z].getContext("2d");
+            //layers[z].width = layers[z].height = plan.getSize();
+
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
             const data = context.createImageData(plan.getSize(), plan.getSize());
             let index = 0;
 
@@ -39,6 +45,18 @@ const Island = function(lighting) {
                             data.data[index + 2] = Math.min(Math.round(sample.color.b * l), 255);
                             data.data[index + 3] = 255;
 
+                            if (x < xMin)
+                                xMin = x;
+
+                            if (y < yMin)
+                                yMin = y;
+
+                            if (x > xMax)
+                                xMax = x;
+
+                            if (y > yMax)
+                                yMax = y;
+
                             break;
                         }
                     }
@@ -47,7 +65,11 @@ const Island = function(lighting) {
                 }
             }
 
-            context.putImageData(data, 0, 0);
+            canvas.width = xMax - xMin;
+            canvas.height = yMax - yMin;
+            context.putImageData(data, -xMin, -yMin);
+
+            layers.push(new Layer(xMin, yMin, canvas));
 
             if (++z === plan.getHeight()) {
                 ready = true;
@@ -67,10 +89,7 @@ const Island = function(lighting) {
         z = 0;
         ready = false;
         plan = newPlan;
-        layers = new Array(plan.getHeight());
-
-        for (let i = 0; i < plan.getHeight(); ++i)
-            layers[i] = document.createElement("canvas");
+        layers = [];
     };
 };
 

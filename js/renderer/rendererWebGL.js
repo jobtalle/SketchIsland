@@ -22,12 +22,11 @@ const RendererWebGL = function(island, canvas) {
         clear();
 
         for (let z = 0; z < island.getPlan().getHeight(); ++z) {
-            const canvas = island.getLayers()[z];
-            const context = canvas.getContext("2d");
-            const data = context.getImageData(0, 0, canvas.width, canvas.height);
+            const layer = island.getLayers()[z];
+            const context = layer.canvas.getContext("2d");
+            const data = context.getImageData(0, 0, layer.canvas.width, layer.canvas.height);
 
-            // TODO: It'd be nice if myr.js accepts a canvas directly, or unpacks it under the hood
-            surfaces.push(new myr.Surface(canvas.width, canvas.height, data.data, true, false));
+            surfaces.push(new myr.Surface(layer.canvas.width, layer.canvas.height, data.data, true, false));
         }
     };
 
@@ -55,13 +54,17 @@ const RendererWebGL = function(island, canvas) {
         myr.translate(myr.getWidth() * 0.5, myr.getHeight() * 0.5);
 
         for (let z = 0; z < island.getPlan().getHeight(); ++z) {
+            const layer = island.getLayers()[z];
+
             myr.push();
             myr.translate(0, (island.getPlan().getHeight() * 0.5 - z) * scale);
             myr.scale(1, pitch);
             myr.rotate(-angle);
             myr.scale(scale, scale);
 
-            surfaces[z].draw(island.getPlan().getSize() * -0.5, island.getPlan().getSize() * -0.5);
+            surfaces[z].draw(
+                island.getPlan().getSize() * -0.5 + layer.x,
+                island.getPlan().getSize() * -0.5 + layer.y);
 
             myr.pop();
         }
