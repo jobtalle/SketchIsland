@@ -1,6 +1,7 @@
 const ShapeHeightmap = function(heightmap, height) {
     const colorsDefault = new Array(height);
     const colorsVolcano = new Array(height);
+    const bufferedColors = new Array(heightmap.getSize() * heightmap.getSize());
 
     this.bounds = heightmap.getBounds(height);
 
@@ -10,10 +11,19 @@ const ShapeHeightmap = function(heightmap, height) {
         if (z >= h)
             return null;
 
-        if (heightmap.getType(x, y) === Heightmap.TYPE_DEFAULT)
+        if (heightmap.getType(x, y) === Heightmap.TYPE_DEFAULT) {
+            const index = x + y * heightmap.getSize();
+
+            if (!bufferedColors[index])
+                bufferedColors[index] = Heightmap.GRADIENTS[Heightmap.TYPE_DEFAULT].sample(
+                    Math.pow(
+                        heightmap.getHeight(x, y),
+                        Math.pow(heightmap.getNormal(x, y).dot(ShapeHeightmap.UP), ShapeHeightmap.GRADIENT_POWER)));
+
             return new Sample(
-                colorsDefault[z],
+                bufferedColors[index],
                 heightmap.getNormal(x, y));
+        }
 
         return new Sample(
             colorsVolcano[z],
@@ -25,3 +35,6 @@ const ShapeHeightmap = function(heightmap, height) {
         colorsVolcano[z] = Heightmap.GRADIENTS[Heightmap.TYPE_VOLCANO].sample(z / height);
     }
 };
+
+ShapeHeightmap.GRADIENT_POWER = 0.12;
+ShapeHeightmap.UP = new Vector3(0, 0, 1);

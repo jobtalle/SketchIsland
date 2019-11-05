@@ -72,7 +72,7 @@ const Heightmap = function(size) {
             let height = multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD;
 
             if (height > 1) {
-                height = 1 - Math.min(1, Math.max(0, height - 1 - Heightmap.VOLCANO_RIM));
+                height = Math.max(Heightmap.VOLCANO_MIN, 1 - Math.min(1, Math.max(0, height - 1 - Heightmap.VOLCANO_RIM)));
 
                 if (height === 1)
                     types[index] = Heightmap.TYPE_DEFAULT;
@@ -124,16 +124,17 @@ Heightmap.WATER_THRESHOLD = 0.1;
 Heightmap.POWER = 3.5;
 Heightmap.MULTIPLIER = 5;
 Heightmap.PEAK_POWER = 0.7;
+Heightmap.VOLCANO_MIN = 0.85;
 Heightmap.SCALE = 5;
-Heightmap.SCALE_FALLOFF = 1.75;
+Heightmap.SCALE_FALLOFF = 1.8;
 Heightmap.OCTAVES = 7;
 Heightmap.OCTAVE_FALLOFF = 2.4;
 Heightmap.OCTAVE_INFLUENCE_INITIAL = ((Heightmap.OCTAVE_FALLOFF - 1) *
     (Math.pow(Heightmap.OCTAVE_FALLOFF, Heightmap.OCTAVES))) /
     (Math.pow(Heightmap.OCTAVE_FALLOFF, Heightmap.OCTAVES) - 1) / Heightmap.OCTAVE_FALLOFF;
 Heightmap.GRADIENT_BEACH_START = 0;
-Heightmap.GRADIENT_BEACH_END = 0.05;
-Heightmap.GRADIENT_GRASS_START = 0.1;
+Heightmap.GRADIENT_BEACH_END = 0.07;
+Heightmap.GRADIENT_GRASS_START = 0.11;
 Heightmap.GRADIENT_GRASS_END = 0.7;
 Heightmap.GRADIENT_MOUNTAIN_START = 0.75;
 Heightmap.GRADIENT_MOUNTAIN_END = 1;

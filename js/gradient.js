@@ -2,7 +2,7 @@ const Gradient = function(stops) {
     this.sample = at => {
         let lastIndex = 0;
 
-        while (stops[lastIndex].at <= at)
+        while (stops[lastIndex].at <= Math.min(0.9999, at))
             ++lastIndex;
 
         const first = stops[lastIndex - 1];
