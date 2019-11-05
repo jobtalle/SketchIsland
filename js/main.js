@@ -43,6 +43,8 @@ const resize = () => {
     divRenderer.style.width = canvas2d.width + "px";
     divRenderer.style.height = canvas2d.height + "px";
 
+    renderer.resize(canvasWrapper.offsetWidth, canvasWrapper.offsetHeight);
+
     updateParameters();
 };
 

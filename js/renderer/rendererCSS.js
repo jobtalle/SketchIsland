@@ -37,6 +37,10 @@ const RendererCSS = function(island, element) {
             element.removeChild(element.firstChild);
     };
 
+    this.resize = () => {
+
+    };
+
     this.render = (angle, pitch, scale) => {
         const originOffset = Math.round(island.getPlan().getSize() * -0.5);
         const sliceTransform = "scale(1," + pitch + ") rotate(" + angle + "rad) translate(" + originOffset + "px," + originOffset + "px)";

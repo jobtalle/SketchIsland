@@ -41,7 +41,8 @@ const Renderer = function(canvas2d, canvas3d, element) {
     };
 
     this.resize = (width, height) => {
-
+        if (current)
+            current.resize(width, height);
     };
 
     this.render = (angle, pitch, scale) => {
