@@ -36,5 +36,5 @@ const ShapeHeightmap = function(heightmap, height) {
     }
 };
 
-ShapeHeightmap.GRADIENT_POWER = 0.12;
+ShapeHeightmap.GRADIENT_POWER = 0.3;
 ShapeHeightmap.UP = new Vector3(0, 0, 1);

@@ -46,5 +46,5 @@ Trees.DOT_MIN = 0.15;
 Trees.HEIGHT_MIN = 0.1;
 Trees.HEIGHT_MAX = 0.7;
 Trees.CHANCE_MIN = 1;
-Trees.AMBIENT = 0.9;
+Trees.AMBIENT = 0.85;
 Trees.INSET = 1.5;
