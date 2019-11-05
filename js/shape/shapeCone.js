@@ -1,4 +1,8 @@
 const ShapeCone = function(origin, radius, height, color) {
+    const angle = Math.atan2(height, radius);
+    const nz = Math.cos(angle);
+    const fh = Math.sin(angle);
+
     this.bounds = new Bounds(
         new Vector3(
             Math.floor(origin.x - radius),
@@ -26,7 +30,7 @@ const ShapeCone = function(origin, radius, height, color) {
 
         return new Sample(
             color,
-            new Vector3(dx, dy, 0).normalize());
+            new Vector3(dx * fh, dy * fh, nz).normalize());
     };
 };
 
