@@ -27,7 +27,7 @@ const RendererWebGL = function(island, canvas) {
             const data = context.getImageData(0, 0, canvas.width, canvas.height);
 
             // TODO: It'd be nice if myr.js accepts a canvas directly, or unpacks it under the hood
-            surfaces.push(new myr.Surface(canvas.width, canvas.height, data.data));
+            surfaces.push(new myr.Surface(canvas.width, canvas.height, data.data, true, false));
         }
     };
 

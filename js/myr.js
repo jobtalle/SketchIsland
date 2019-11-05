@@ -1249,7 +1249,7 @@ const Myr = function(canvasElement, antialias, alpha) {
 
     _gl.enable(_gl.BLEND);
     _gl.disable(_gl.DEPTH_TEST);
-    _gl.blendFuncSeparate(_gl.SRC_ALPHA, _gl.ONE_MINUS_SRC_ALPHA, _gl.ONE, _gl.ONE_MINUS_SRC_ALPHA);
+    _gl.blendFunc(_gl.ONE, _gl.ONE_MINUS_SRC_ALPHA);
     _gl.getExtension("EXT_color_buffer_float");
 
     _gl.bindBuffer(_gl.ARRAY_BUFFER, _instances);
