@@ -27,13 +27,13 @@ const Trees = function(size, height, heightmap, bounds, lighting, scale) {
                     Math.max(0, Math.min(1, Trees.COLOR_PINE.r * l)),
                     Math.max(0, Math.min(1, Trees.COLOR_PINE.g * l)),
                     Math.max(0, Math.min(1, Trees.COLOR_PINE.b * l))),
-                    Trees.VOLUME_DENSITY));
+                    1 - (1 - Trees.VOLUME_DENSITY) * scale));
             }
         }
     };
 };
 
-Trees.VOLUME_DENSITY = 0.75;
+Trees.VOLUME_DENSITY = 0.5;
 Trees.RADIUS_MIN = 8;
 Trees.RADIUS_MAX = 16;
 Trees.HEIGHT_RATIO = 2;
