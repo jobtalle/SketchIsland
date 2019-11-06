@@ -1,4 +1,22 @@
 const Village = function(height, heightmap, bounds, scale) {
+    const HutPlan = function(location) {
+        this.base = new ShapeCylinder(
+            location.copy().subtract(new Vector3(0, 0, Village.HUT_DEPTH * scale)),
+            Village.HUT_RADIUS * Village.HUT_ROOF_RADIUS * scale,
+            Village.HUT_DEPTH * scale,
+            Village.COLOR_HUT_BASE);
+        this.roof = new ShapeCone(
+            location.copy().add(new Vector3(0, 0, Village.HUT_HEIGHT * scale)),
+            Village.HUT_RADIUS * Village.HUT_ROOF_RADIUS * scale,
+            Village.HUT_HEIGHT * Village.HUT_ROOF_HEIGHT * scale,
+            Village.COLOR_HUT_ROOF);
+        this.walls = new ShapeCylinder(
+            location.copy(),
+            Village.HUT_RADIUS * scale,
+            Village.HUT_HEIGHT * scale,
+            Village.COLOR_HUT_WALLS);
+    };
+
     const suitableVillage = (x, y) => {
         if (x < 0 || y < 0 || x >= heightmap.getSize() || y >= heightmap.getSize())
             return false;
@@ -23,7 +41,7 @@ const Village = function(height, heightmap, bounds, scale) {
         return heightmap.getNormal(x, y).dot(Vector3.UP) >= Village.HUT_DOT_MIN;
     };
 
-    const pickLocation = () => {
+    const getSuitableLocations = () => {
         const Candidate = function(x, y, score) {
             this.x = x;
             this.y = y;
@@ -44,65 +62,48 @@ const Village = function(height, heightmap, bounds, scale) {
             }
         }
 
-        candidates.sort((a, b) => b.score - a.score);
-
-        if (candidates.length === 0)
-            return null;
-
-        return candidates[0];
+        return candidates.sort((a, b) => b.score - a.score);
     };
 
-    this.place = shapes => {
-        const HutPlan = function(location) {
-            this.base = new ShapeCylinder(
-                location.copy().subtract(new Vector3(0, 0, Village.HUT_DEPTH * scale)),
-                Village.HUT_RADIUS * Village.HUT_ROOF_RADIUS * scale,
-                Village.HUT_DEPTH * scale,
-                Village.COLOR_HUT_BASE);
-            this.roof = new ShapeCone(
-                location.copy().add(new Vector3(0, 0, Village.HUT_HEIGHT * scale)),
-                Village.HUT_RADIUS * Village.HUT_ROOF_RADIUS * scale,
-                Village.HUT_HEIGHT * Village.HUT_ROOF_HEIGHT * scale,
-                Village.COLOR_HUT_ROOF);
-            this.walls = new ShapeCylinder(
-                location.copy(),
-                Village.HUT_RADIUS * scale,
-                Village.HUT_HEIGHT * scale,
-                Village.COLOR_HUT_WALLS);
-        };
-
-        const origin = pickLocation();
+    const growVillage = (x, y, shapes) => {
         const plans = [];
 
-        if (origin === null)
-            return;
-
-        plans.push(new HutPlan(new Vector3(origin.x, origin.y, heightmap.getHeight(origin.x, origin.y) * height)));
+        plans.push(new HutPlan(new Vector3(x, y, heightmap.getHeight(x, y) * height)));
 
         const spacingAverage = (Village.HUT_SPACING_MIN + Village.HUT_SPACING_MAX) * 0.5 * scale;
         const spacingDeviation = (Village.HUT_SPACING_MAX - Village.HUT_SPACING_MIN) * 0.5 * scale;
         const area = heightmap.getSize() * heightmap.getSize();
         const hutCount = Math.round((Village.HUTS_MIN + (Village.HUTS_MAX - Village.HUTS_MIN) * Math.pow(Math.random(), Village.HUTS_POWER) * area));
+        let emptyRings = 0;
 
         for (let ring = 0; ring < Village.RINGS_MAX && plans.length < hutCount; ++ring) {
             const angleOffset = Math.random();
             const huts = Math.floor(Math.PI * ring * spacingAverage * 2 / spacingAverage);
+            let placed = false;
 
             for (let i = 0; i < huts && plans.length < hutCount; ++i) {
                 const radius = ring * spacingAverage - spacingDeviation + spacingDeviation * Math.random() * 2;
                 const angle = Math.PI * 2 * (i + angleOffset) / huts;
-                const hx = Math.round(origin.x + Math.cos(angle) * radius);
-                const hy = Math.round(origin.y + Math.sin(angle) * radius);
+                const hx = Math.round(x + Math.cos(angle) * radius);
+                const hy = Math.round(y + Math.sin(angle) * radius);
 
                 if (!suitableHut(hx, hy) || Math.random() < Village.HUT_SKIP_CHANCE)
                     continue;
 
                 plans.push(new HutPlan(new Vector3(hx, hy, heightmap.getHeight(hx, hy) * height)));
+                placed = true;
             }
+
+            if (!placed) {
+                if (++emptyRings > Village.RINGS_EMPTY_MAX)
+                    break;
+            }
+            else
+                emptyRings = 0;
         }
 
         if (plans.length < Village.MIN_SIZE)
-            return;
+            return false;
 
         for (const plan of plans) {
             shapes.cropBounds(plan.roof.bounds);
@@ -114,10 +115,24 @@ const Village = function(height, heightmap, bounds, scale) {
             shapes.add(plan.walls);
             shapes.add(plan.base);
         }
+
+        return true;
+    };
+
+    this.place = shapes => {
+        const locations = getSuitableLocations();
+
+        while (locations.length !== 0) {
+            const location = locations.shift();
+
+            if (growVillage(location.x, location.y, shapes))
+                return;
+        }
     };
 };
 
 Village.RINGS_MAX = 8;
+Village.RINGS_EMPTY_MAX = 1;
 Village.HUTS_MIN = 0.0025;
 Village.HUTS_MAX = 0.015;
 Village.HUTS_POWER = 2;
