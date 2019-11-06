@@ -1,13 +1,47 @@
 const Plan = function(size, height, scale, lighting) {
-    const heightmap = new Heightmap(size);
-    const shapes = new Shapes(size, height);
-    const shapeHeightmap = new ShapeHeightmap(heightmap, height);
+    let heightmap = null;
+    let shapes = null;
+    let shapeHeightmap = null;
+    let step = 0;
+    let ready = false;
+    let firstLoadFrame = true;
+
+    const steps = [
+        () => {
+            heightmap = new Heightmap(size);
+        },
+        () => {
+            shapes = new Shapes(size, height);
+            shapeHeightmap = new ShapeHeightmap(heightmap, height);
+        },
+        () => {
+            new Trees(size, height, heightmap, shapeHeightmap.bounds, lighting, scale).plant(shapes);
+
+            shapes.add(shapeHeightmap);
+        }
+    ];
+
+    this.isReady = () => ready;
+
+    this.generate = maxRate => {
+        if (firstLoadFrame) {
+            firstLoadFrame = false;
+
+            return 0;
+        }
+
+        const startTime = new Date();
+
+        while ((new Date() - startTime) * 0.001 < maxRate && step < steps.length)
+            steps[step++]();
+
+        if (step === steps.length)
+            ready = true;
+
+        return step / steps.length;
+    };
 
     this.getSize = () => size;
     this.getHeight = () => height;
     this.getShapes = () => shapes;
-
-    new Trees(size, height, heightmap, shapeHeightmap.bounds, lighting, scale).plant(shapes);
-
-    shapes.add(shapeHeightmap);
 };

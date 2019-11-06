@@ -5,6 +5,8 @@ const Y_FILL = 0.65;
 const HEIGHT_RATIO = 0.18;
 const TIME_STEP_MAX = 0.1;
 const SIZE_MAX = 1500;
+const GEN_RATE = 1 / 60;
+const PLAN_PERCENTAGE = 0.1;
 
 const lighting = new Lighting();
 const island = new Island(lighting);
@@ -15,6 +17,7 @@ const canvas2d = document.getElementById("renderer-2d");
 const divRenderer = document.getElementById("div-renderer");
 const renderer = new Renderer(canvas2d, canvasWebgl, divRenderer);
 let lastDate = new Date();
+let plan = null;
 let size = 0;
 let height = 0;
 let angle = Math.PI * 0.5;
@@ -51,8 +54,15 @@ const resize = () => {
 };
 
 const update = timeStep => {
-    if (!island.isReady()) {
-        loader.update(island.generate());
+    if (plan && !plan.isReady()) {
+        loader.update(plan.generate(GEN_RATE) * PLAN_PERCENTAGE);
+
+        if (plan.isReady()) {
+            island.setPlan(plan);
+        }
+    }
+    else if (!island.isReady()) {
+        loader.update(PLAN_PERCENTAGE+ island.generate(GEN_RATE) * (1 - PLAN_PERCENTAGE));
 
         if (island.isReady()) {
             updated = true;
@@ -68,7 +78,7 @@ const update = timeStep => {
             else if (angle < 0)
                 angle += Math.PI + Math.PI;
 
-        if (island.isReady())
+        if (plan.isReady() && island.isReady())
             renderer.render(angle, pitch, scale);
 
         updated = false;
@@ -86,7 +96,7 @@ const loopFunction = () => {
 
 const replan = () => {
     loader.update(0);
-    island.setPlan(new Plan(size, height, 1 / scale, lighting));
+    plan = new Plan(size, height, 1 / scale, lighting);
 };
 
 const mouseDown = (x, y, drag) => {

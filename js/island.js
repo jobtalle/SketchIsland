@@ -4,11 +4,11 @@ const Island = function(lighting) {
     let layers = null;
     let z;
 
-    this.generate = () => {
+    this.generate = maxRate => {
         const startTime = new Date();
         const size = plan.getSize();
 
-        while ((new Date() - startTime) * 0.001 < Island.GEN_RATE) {
+        while ((new Date() - startTime) * 0.001 < maxRate) {
             let xMin = plan.getSize();
             let xMax = 0;
             let yMin = plan.getSize();
@@ -101,5 +101,3 @@ const Island = function(lighting) {
         layers = [];
     };
 };
-
-Island.GEN_RATE = 1 / 60;
