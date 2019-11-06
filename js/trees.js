@@ -11,9 +11,14 @@ const Trees = function(size, height, heightmap, bounds, lighting, scale) {
                 if (h < Trees.HEIGHT_MIN || h > Trees.HEIGHT_MAX)
                     continue;
 
-                const heightFactor = (h - Trees.HEIGHT_MIN) * (1 / (Trees.HEIGHT_MAX - Trees.HEIGHT_MIN));
+                let heightFactor;
 
-                if (Math.random() > Trees.CHANCE_MIN * (1 - heightFactor))
+                if (h < Trees.HEIGHT_PEAK)
+                    heightFactor = 1 - (h - Trees.HEIGHT_MIN) * (1 / (Trees.HEIGHT_PEAK - Trees.HEIGHT_MIN));
+                else
+                    heightFactor = (h - Trees.HEIGHT_PEAK) * (1 / (Trees.HEIGHT_MAX - Trees.HEIGHT_PEAK));
+
+                if (Math.random() < Trees.CHANCE_MIN * heightFactor)
                     continue;
 
                 if (heightmap.getNormal(plantX, plantY).dot(Trees.DIRECTION) < Trees.DOT_MIN)
@@ -43,8 +48,9 @@ Trees.DISPLACEMENT = Trees.SPACING;
 Trees.COLOR_PINE = StyleUtils.getColor("--color-tree-pine");
 Trees.DIRECTION = new Vector3(-0.1, 0.1, 2).normalize();
 Trees.DOT_MIN = 0.15;
-Trees.HEIGHT_MIN = 0.1;
-Trees.HEIGHT_MAX = 0.7;
-Trees.CHANCE_MIN = 1;
+Trees.HEIGHT_MIN = 0.05;
+Trees.HEIGHT_PEAK = 0.15;
+Trees.HEIGHT_MAX = 0.65;
+Trees.CHANCE_MIN = 0.9;
 Trees.AMBIENT = 0.85;
 Trees.INSET = 1.5;
