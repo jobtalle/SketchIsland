@@ -99,10 +99,10 @@ const mouseDown = (x, y, drag) => {
         replan();
 };
 
-const mouseUp = () => {
+const mouseUp = touch => {
     dragging = false;
 
-    if (updated)
+    if (updated && !touch)
         angleDelta = ANGLE_SPEED * Math.sign(angleDelta);
     else
         angleDelta = 0;
@@ -128,9 +128,9 @@ canvas2d.addEventListener("mousemove", event =>
 canvas2d.addEventListener("touchmove", event =>
     mouseMove(event.touches[0].clientX, event.touches[0].clientY));
 canvas2d.addEventListener("mouseup", event =>
-    mouseUp());
+    mouseUp(false));
 canvas2d.addEventListener("touchend", event =>
-    mouseUp());
+    mouseUp(true));
 
 requestAnimationFrame(loopFunction);
 resize();
