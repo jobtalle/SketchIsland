@@ -7,7 +7,29 @@ const Shapes = function(size, height) {
     for (let i = 0; i < cells.length; ++i)
         cells[i] = [];
 
+    const cropBounds = bounds => {
+        if (bounds.start.x < 0)
+            bounds.start.x = 0;
+
+        if (bounds.start.y < 0)
+            bounds.start.y = 0;
+
+        if (bounds.start.z < 0)
+            bounds.start.z = 0;
+
+        if (bounds.end.x > size)
+            bounds.end.x = size;
+
+        if (bounds.end.y > size)
+            bounds.end.y = size;
+
+        if (bounds.end.z > height)
+            bounds.end.z = height;
+    };
+
     this.add = shape => {
+        cropBounds(shape.bounds);
+
         for (let z = Math.floor(shape.bounds.start.z * Shapes.CELL_SIZE_INVERSE);
              z < Math.ceil(shape.bounds.end.z * Shapes.CELL_SIZE_INVERSE);
              ++z) {

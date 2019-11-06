@@ -4,6 +4,8 @@ const Vector3 = function(x, y, z) {
     this.z = z;
 };
 
+Vector3.UP = new Vector3(0, 0, 1);
+
 Vector3.prototype.dot = function(other) {
     return this.x * other.x + this.y * other.y + this.z * other.z;
 };

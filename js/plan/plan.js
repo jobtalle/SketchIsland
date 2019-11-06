@@ -15,8 +15,12 @@ const Plan = function(size, height, scale, lighting) {
             shapeHeightmap = new ShapeHeightmap(heightmap, height);
         },
         () => {
-            new Trees(size, height, heightmap, shapeHeightmap.bounds, lighting, scale).plant(shapes);
-
+            new Trees(height, heightmap, shapeHeightmap.bounds, lighting, scale).plant(shapes);
+        },
+        () => {
+            new Village(height, heightmap, shapeHeightmap.bounds, scale).place(shapes);
+        },
+        () => {
             shapes.add(shapeHeightmap);
         }
     ];

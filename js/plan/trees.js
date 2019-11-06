@@ -1,4 +1,4 @@
-const Trees = function(size, height, heightmap, bounds, lighting, scale) {
+const Trees = function(height, heightmap, bounds, lighting, scale) {
     this.plant = shapes => {
         const stride = Trees.SPACING * scale;
 

@@ -1,8 +1,4 @@
-const ShapeCone = function(origin, radius, height, color, density = 1) {
-    const angle = Math.atan2(height, radius);
-    const nz = Math.cos(angle);
-    const fh = Math.sin(angle);
-
+const ShapeCylinder = function(origin, radius, height, color, density = 1) {
     this.bounds = new Bounds(
         new Vector3(
             Math.floor(origin.x - radius),
@@ -19,22 +15,20 @@ const ShapeCone = function(origin, radius, height, color, density = 1) {
 
         const dx = x - origin.x;
         const dy = y - origin.y;
-        const dz = z - origin.z;
         const distSquared = dx * dx + dy * dy;
-        const r = radius * (1 - dz / height);
 
-        if (distSquared > r * r)
+        if (distSquared > radius * radius)
             return null;
 
         if (distSquared === 0)
             return new Sample(
                 color,
-                ShapeCone.NORMAL_CENTER);
+                ShapeCylinder.NORMAL_CENTER);
 
         return new Sample(
             color,
-            new Vector3(dx * fh, dy * fh, nz).normalize());
+            new Vector3(dx, dy, 0).normalize());
     };
 };
 
-ShapeCone.NORMAL_CENTER = new Vector3(1, 0, 0);
+ShapeCylinder.NORMAL_CENTER = new Vector3(1, 0, 0);
