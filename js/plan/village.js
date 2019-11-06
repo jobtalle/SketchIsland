@@ -96,7 +96,7 @@ const Village = function(height, heightmap, bounds, scale) {
 
             if (!placed) {
                 if (++emptyRings > Village.RINGS_EMPTY_MAX)
-                    break;
+                    return false;
             }
             else
                 emptyRings = 0;
