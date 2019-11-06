@@ -63,6 +63,7 @@ body {
     width: 100%;
     height: var(--loader-size);
     border-top: 1px solid var(--color-mountain-end);
+    user-select: none;
 }
 
 #wrapper #loader #loaded {
