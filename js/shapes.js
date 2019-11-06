@@ -7,7 +7,7 @@ const Shapes = function(size, height) {
     for (let i = 0; i < cells.length; ++i)
         cells[i] = [];
 
-    const cropBounds = bounds => {
+    this.cropBounds = bounds => {
         if (bounds.start.x < 0)
             bounds.start.x = 0;
 
@@ -27,8 +27,45 @@ const Shapes = function(size, height) {
             bounds.end.z = height;
     };
 
+    this.clear = bounds => {
+        const shapes = [];
+
+        for (let z = Math.floor(bounds.start.z * Shapes.CELL_SIZE_INVERSE);
+             z < Math.ceil(bounds.end.z * Shapes.CELL_SIZE_INVERSE);
+             ++z)
+            for (let y = Math.floor(bounds.start.y * Shapes.CELL_SIZE_INVERSE);
+                 y < Math.ceil(bounds.end.y * Shapes.CELL_SIZE_INVERSE);
+                 ++y)
+                for (let x = Math.floor(bounds.start.x * Shapes.CELL_SIZE_INVERSE);
+                     x < Math.ceil(bounds.end.x * Shapes.CELL_SIZE_INVERSE);
+                     ++x)
+                    for (const shape of cells[z * sizeCellsSquared + y * sizeCells + x])
+                        if (shapes.indexOf(shape) === -1 && shape.bounds.overlaps(bounds))
+                            shapes.push(shape);
+
+        for (const shape of shapes) {
+            for (let z = Math.floor(shape.bounds.start.z * Shapes.CELL_SIZE_INVERSE);
+                 z < Math.ceil(shape.bounds.end.z * Shapes.CELL_SIZE_INVERSE);
+                 ++z) {
+                for (let y = Math.floor(shape.bounds.start.y * Shapes.CELL_SIZE_INVERSE);
+                     y < Math.ceil(shape.bounds.end.y * Shapes.CELL_SIZE_INVERSE);
+                     ++y) {
+                    for (let x = Math.floor(shape.bounds.start.x * Shapes.CELL_SIZE_INVERSE);
+                         x < Math.ceil(shape.bounds.end.x * Shapes.CELL_SIZE_INVERSE);
+                         ++x) {
+                        const cell = cells[z * sizeCellsSquared + y * sizeCells + x];
+
+                        for (let i = cell.length; i-- > 0;)
+                            if (shapes.indexOf(cell[i]) !== -1)
+                                cell.splice(i, 1);
+                    }
+                }
+            }
+        }
+    };
+
     this.add = shape => {
-        cropBounds(shape.bounds);
+        this.cropBounds(shape.bounds);
 
         for (let z = Math.floor(shape.bounds.start.z * Shapes.CELL_SIZE_INVERSE);
              z < Math.ceil(shape.bounds.end.z * Shapes.CELL_SIZE_INVERSE);

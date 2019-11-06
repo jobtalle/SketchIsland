@@ -34,17 +34,50 @@ const Village = function(height, heightmap, bounds, scale) {
         return candidates[0];
     };
 
+    const placeHut = (shapes, at) => {
+        const base = new ShapeCylinder(
+            at.copy().subtract(new Vector3(0, 0, Village.HUT_DEPTH)),
+            Village.HUT_RADIUS,
+            Village.HUT_DEPTH,
+            Village.COLOR_HUT_BASE);
+        const walls = new ShapeCone(
+            at.copy().add(new Vector3(0, 0, Village.HUT_HEIGHT)),
+            Village.HUT_RADIUS * Village.HUT_ROOF_RADIUS,
+            Village.HUT_HEIGHT * Village.HUT_ROOF_HEIGHT,
+            Village.COLOR_HUT_ROOF);
+        const roof = new ShapeCylinder(
+            at,
+            Village.HUT_RADIUS,
+            Village.HUT_HEIGHT,
+            Village.COLOR_HUT_WALLS);
+
+        shapes.cropBounds(walls.bounds);
+        shapes.clear(walls.bounds);
+
+        shapes.add(new ShapeCylinder(
+            at.copy().subtract(new Vector3(0, 0, Village.HUT_DEPTH)),
+            Village.HUT_RADIUS,
+            Village.HUT_DEPTH,
+            Village.COLOR_HUT_BASE), true);
+        shapes.add(new ShapeCone(
+            at.copy().add(new Vector3(0, 0, Village.HUT_HEIGHT)),
+            Village.HUT_RADIUS * Village.HUT_ROOF_RADIUS,
+            Village.HUT_HEIGHT * Village.HUT_ROOF_HEIGHT,
+            Village.COLOR_HUT_ROOF));
+        shapes.add(new ShapeCylinder(
+            at,
+            Village.HUT_RADIUS,
+            Village.HUT_HEIGHT,
+            Village.COLOR_HUT_WALLS));
+    };
+
     this.place = shapes => {
         const origin = pickLocation();
 
         if (origin === null)
             return;
 
-        shapes.add(new ShapeCylinder(
-            new Vector3(origin.x, origin.y, heightmap.getHeight(origin.x, origin.y) * height),
-            Village.HUT_RADIUS,
-            100,
-            new Color(0.8, 0, 0)));
+        placeHut(shapes, new Vector3(origin.x, origin.y, heightmap.getHeight(origin.x, origin.y) * height));
     };
 };
 
@@ -52,4 +85,11 @@ Village.HEIGHT_MIN = 0.15;
 Village.HEIGHT_MAX = 0.35;
 Village.DOT_MIN = 0.7;
 Village.HUT_RADIUS = 5;
+Village.HUT_HEIGHT = 6;
+Village.HUT_DEPTH = 8;
+Village.HUT_ROOF_RADIUS = 1.25;
+Village.HUT_ROOF_HEIGHT = 0.8;
 Village.PROBE_STRIDE = 30;
+Village.COLOR_HUT_BASE = StyleUtils.getColor("--color-hut-base");
+Village.COLOR_HUT_WALLS = StyleUtils.getColor("--color-hut-walls");
+Village.COLOR_HUT_ROOF = StyleUtils.getColor("--color-hut-roof");
