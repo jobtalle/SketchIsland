@@ -4,6 +4,7 @@ const X_FILL = 1;
 const Y_FILL = 0.65;
 const HEIGHT_RATIO = 0.18;
 const TIME_STEP_MAX = 0.1;
+const SIZE_MAX = 1500;
 
 const lighting = new Lighting();
 const island = new Island(lighting);
@@ -31,9 +32,9 @@ if (!renderer.supportsWebGL) {
 }
 
 const updateParameters = () => {
-    size = Math.min(
+    size = Math.min(SIZE_MAX, Math.min(
         Math.floor(canvas2d.width * X_FILL / scale),
-        Math.floor((canvas2d.height * Y_FILL / pitch) / scale));
+        Math.floor((canvas2d.height * Y_FILL / pitch) / scale)));
     height = Math.ceil(size * HEIGHT_RATIO);
     updated = true;
 };

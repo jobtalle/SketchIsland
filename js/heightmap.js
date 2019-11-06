@@ -120,7 +120,7 @@ Heightmap.TYPE_DEFAULT = 0;
 Heightmap.TYPE_VOLCANO = 1;
 Heightmap.VOLCANO_RIM = 0.07;
 Heightmap.NORMAL_EDGE = new Vector3(0, 0, -1);
-Heightmap.WATER_THRESHOLD = 0.1;
+Heightmap.WATER_THRESHOLD = 0.08;
 Heightmap.POWER = 3.5;
 Heightmap.MULTIPLIER = 5;
 Heightmap.PEAK_POWER = 0.7;
@@ -133,7 +133,7 @@ Heightmap.OCTAVE_INFLUENCE_INITIAL = ((Heightmap.OCTAVE_FALLOFF - 1) *
     (Math.pow(Heightmap.OCTAVE_FALLOFF, Heightmap.OCTAVES))) /
     (Math.pow(Heightmap.OCTAVE_FALLOFF, Heightmap.OCTAVES) - 1) / Heightmap.OCTAVE_FALLOFF;
 Heightmap.GRADIENT_BEACH_START = 0;
-Heightmap.GRADIENT_BEACH_END = 0.1;
+Heightmap.GRADIENT_BEACH_END = 0.12;
 Heightmap.GRADIENT_GRASS_START = 0.25;
 Heightmap.GRADIENT_GRASS_END = 0.7;
 Heightmap.GRADIENT_MOUNTAIN_START = 0.8;
