@@ -85,11 +85,12 @@ const Village = function(height, heightmap, bounds, scale) {
         const hutCount = Math.round((Village.HUTS_MIN + (Village.HUTS_MAX - Village.HUTS_MIN) * Math.pow(Math.random(), Village.HUTS_POWER) * area));
 
         for (let ring = 0; ring < Village.RINGS_MAX && plans.length < hutCount; ++ring) {
-            let huts = Math.floor(Math.PI * ring * spacingAverage * 2 / spacingAverage);
+            const angleOffset = Math.random();
+            const huts = Math.floor(Math.PI * ring * spacingAverage * 2 / spacingAverage);
 
             for (let i = 0; i < huts && plans.length < hutCount; ++i) {
                 const radius = ring * spacingAverage - spacingDeviation + spacingDeviation * Math.random() * 2;
-                const angle = Math.PI * 2 * i / huts;
+                const angle = Math.PI * 2 * (i + angleOffset) / huts;
                 const hx = Math.round(origin.x + Math.cos(angle) * radius);
                 const hy = Math.round(origin.y + Math.sin(angle) * radius);
 
