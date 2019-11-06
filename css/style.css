@@ -1,5 +1,6 @@
 :root {
-    --color-ocean: #3e8abf;
+    --color-ocean: #80c5ef;
+    --color-ocean-distant: #336d97;
     --color-beach-start: #99ddeb00;
     --color-beach-end: #d3c78c;
     --color-grass-start: #66ae60;
@@ -20,7 +21,10 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: var(--color-ocean);
+    background: radial-gradient(
+            ellipse at bottom,
+            var(--color-ocean) 0,
+            var(--color-ocean-distant) 100%);
     display: flex;
     flex-direction: column;
 }
