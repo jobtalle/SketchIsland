@@ -31,7 +31,8 @@ const Trees = function(height, heightmap, bounds, lighting, scale) {
                 shapes.add(new ShapeCone(new Vector3(plantX, plantY, h * height - Trees.INSET), radius, tall, new Color(
                     Math.max(0, Math.min(1, Trees.COLOR_PINE.r * l)),
                     Math.max(0, Math.min(1, Trees.COLOR_PINE.g * l)),
-                    Math.max(0, Math.min(1, Trees.COLOR_PINE.b * l))),
+                    Math.max(0, Math.min(1, Trees.COLOR_PINE.b * l)),
+                    Trees.COLOR_PINE.a),
                     1 - (1 - Trees.VOLUME_DENSITY) * scale));
             }
         }

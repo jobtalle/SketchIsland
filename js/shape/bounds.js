@@ -14,8 +14,5 @@ Bounds.prototype.overlaps = function(other) {
     if (this.start.y > other.end.y || other.start.y > this.end.y)
         return false;
 
-    if (this.start.z > other.end.z || other.start.z > this.end.z)
-        return false;
-
-    return true;
+    return !(this.start.z > other.end.z || other.start.z > this.end.z);
 };

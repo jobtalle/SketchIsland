@@ -1,11 +1,26 @@
 const Village = function(height, heightmap, bounds, scale) {
-    const suitable = (x, y) => {
-        const h = heightmap.getHeight(x, y);
-
-        if (h < Village.HEIGHT_MIN || h > Village.HEIGHT_MAX)
+    const suitableVillage = (x, y) => {
+        if (x < 0 || y < 0 || x >= heightmap.getSize() || y >= heightmap.getSize())
             return false;
 
-        return heightmap.getNormal(x, y).dot(Vector3.UP) >= Village.DOT_MIN;
+        const h = heightmap.getHeight(x, y);
+
+        if (h < Village.VILLAGE_HEIGHT_MIN || h > Village.VILLAGE_HEIGHT_MAX)
+            return false;
+
+        return heightmap.getNormal(x, y).dot(Vector3.UP) >= Village.VILLAGE_DOT_MIN;
+    };
+
+    const suitableHut = (x, y) => {
+        if (x < 0 || y < 0 || x >= heightmap.getSize() || y >= heightmap.getSize())
+            return false;
+
+        const h = heightmap.getHeight(x, y);
+
+        if (h < Village.HUT_HEIGHT_MIN || h > Village.HUT_HEIGHT_MAX)
+            return false;
+
+        return heightmap.getNormal(x, y).dot(Vector3.UP) >= Village.HUT_DOT_MIN;
     };
 
     const pickLocation = () => {
@@ -22,7 +37,7 @@ const Village = function(height, heightmap, bounds, scale) {
                 const xr = Math.round(x);
                 const yr = Math.round(y);
 
-                if (!suitable(xr, yr))
+                if (!suitableVillage(xr, yr))
                     continue;
 
                 candidates.push(new Candidate(xr, yr, heightmap.getNormal(xr, yr).dot(Vector3.UP)));
@@ -64,26 +79,33 @@ const Village = function(height, heightmap, bounds, scale) {
 
         plans.push(new HutPlan(new Vector3(origin.x, origin.y, heightmap.getHeight(origin.x, origin.y) * height)));
 
-        let radius = Village.HUT_SPACING * scale;
-        let huts = Math.floor(Math.PI * radius * 2 / Village.HUT_SPACING * scale);
+        const spacingAverage = (Village.HUT_SPACING_MIN + Village.HUT_SPACING_MAX) * 0.5 * scale;
+        const spacingDeviation = (Village.HUT_SPACING_MAX - Village.HUT_SPACING_MIN) * 0.5 * scale;
+        const area = heightmap.getSize() * heightmap.getSize();
+        const hutCount = Math.round((Village.HUTS_MIN + (Village.HUTS_MAX - Village.HUTS_MIN) * Math.pow(Math.random(), Village.HUTS_POWER) * area));
 
-        for (let i = 0; i < huts; ++i) {
-            const angle = Math.PI * 2 * i / huts;
-            const hx = Math.round(origin.x + Math.cos(angle) * radius);
-            const hy = Math.round(origin.y + Math.sin(angle) * radius);
+        for (let ring = 0; ring < Village.RINGS_MAX && plans.length < hutCount; ++ring) {
+            let huts = Math.floor(Math.PI * ring * spacingAverage * 2 / spacingAverage);
 
-            if (!suitable(hx, hy))
-                continue;
+            for (let i = 0; i < huts && plans.length < hutCount; ++i) {
+                const radius = ring * spacingAverage - spacingDeviation + spacingDeviation * Math.random() * 2;
+                const angle = Math.PI * 2 * i / huts;
+                const hx = Math.round(origin.x + Math.cos(angle) * radius);
+                const hy = Math.round(origin.y + Math.sin(angle) * radius);
 
-            plans.push(new HutPlan(new Vector3(hx, hy, heightmap.getHeight(hx, hy) * height)));
+                if (!suitableHut(hx, hy) || Math.random() < Village.HUT_SKIP_CHANCE)
+                    continue;
+
+                plans.push(new HutPlan(new Vector3(hx, hy, heightmap.getHeight(hx, hy) * height)));
+            }
         }
 
         if (plans.length < Village.MIN_SIZE)
             return;
 
         for (const plan of plans) {
-            shapes.cropBounds(plan.walls.bounds);
-            shapes.clear(plan.walls.bounds);
+            shapes.cropBounds(plan.roof.bounds);
+            shapes.clear(plan.roof.bounds);
         }
 
         for (const plan of plans) {
@@ -94,16 +116,25 @@ const Village = function(height, heightmap, bounds, scale) {
     };
 };
 
-Village.HEIGHT_MIN = 0.15;
-Village.HEIGHT_MAX = 0.35;
-Village.DOT_MIN = 0.7;
+Village.RINGS_MAX = 8;
+Village.HUTS_MIN = 0.0025;
+Village.HUTS_MAX = 0.015;
+Village.HUTS_POWER = 2;
+Village.VILLAGE_HEIGHT_MIN = 0.1;
+Village.VILLAGE_HEIGHT_MAX = 0.15;
+Village.VILLAGE_DOT_MIN = 0.7;
+Village.HUT_SKIP_CHANCE = 0.35;
+Village.HUT_HEIGHT_MIN = 0.15;
+Village.HUT_HEIGHT_MAX = 0.5;
+Village.HUT_DOT_MIN = 0.45;
 Village.HUT_RADIUS = 10;
 Village.HUT_HEIGHT = 12;
-Village.HUT_DEPTH = 6;
+Village.HUT_DEPTH = Village.HUT_HEIGHT;
 Village.HUT_ROOF_RADIUS = 1.25;
 Village.HUT_ROOF_HEIGHT = 0.8;
-Village.HUT_SPACING = Village.HUT_RADIUS * 2.5;
-Village.MIN_SIZE = 1;
+Village.HUT_SPACING_MIN = Village.HUT_RADIUS * 2.5;
+Village.HUT_SPACING_MAX = Village.HUT_SPACING_MIN * 2;
+Village.MIN_SIZE = 2;
 Village.PROBE_STRIDE = 24;
 Village.COLOR_HUT_BASE = StyleUtils.getColor("--color-hut-base");
 Village.COLOR_HUT_WALLS = StyleUtils.getColor("--color-hut-walls");

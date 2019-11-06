@@ -135,11 +135,11 @@ Heightmap.OCTAVE_INFLUENCE_INITIAL = ((Heightmap.OCTAVE_FALLOFF - 1) *
 Heightmap.GRADIENT_BEACH_START = 0;
 Heightmap.GRADIENT_BEACH_END = 0.12;
 Heightmap.GRADIENT_GRASS_START = 0.25;
-Heightmap.GRADIENT_GRASS_END = 0.7;
-Heightmap.GRADIENT_MOUNTAIN_START = 0.8;
+Heightmap.GRADIENT_GRASS_END = 0.75;
+Heightmap.GRADIENT_MOUNTAIN_START = 0.85;
 Heightmap.GRADIENT_MOUNTAIN_END = 1;
 Heightmap.GRADIENT_VOLCANO_SURFACE = 0.9;
-Heightmap.GRADIENT_VOLCANO_DEEP = 0.6;
+Heightmap.GRADIENT_VOLCANO_DEEP = Heightmap.VOLCANO_MIN;
 Heightmap.GRADIENTS = [
     new Gradient([
         new Gradient.Stop(Heightmap.GRADIENT_BEACH_START, StyleUtils.getColor("--color-beach-start")),
