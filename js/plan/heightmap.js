@@ -138,7 +138,7 @@ Heightmap.OCTAVE_INFLUENCE_INITIAL = ((Heightmap.OCTAVE_FALLOFF - 1) *
     (Math.pow(Heightmap.OCTAVE_FALLOFF, Heightmap.OCTAVES))) /
     (Math.pow(Heightmap.OCTAVE_FALLOFF, Heightmap.OCTAVES) - 1) / Heightmap.OCTAVE_FALLOFF;
 Heightmap.GRADIENT_BEACH_START = 0;
-Heightmap.GRADIENT_BEACH_END = 0.12;
+Heightmap.GRADIENT_BEACH_END = 0.08;
 Heightmap.GRADIENT_GRASS_START = 0.25;
 Heightmap.GRADIENT_GRASS_END = 0.75;
 Heightmap.GRADIENT_MOUNTAIN_START = 0.85;
