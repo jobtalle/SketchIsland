@@ -48,7 +48,9 @@ const Heightmap = function(size) {
     };
 
     const fill = () => {
-        const maxScale = (1 / size) * Heightmap.SCALE;
+        const maxScale = (1 / size) * (Heightmap.SCALE_MIN + (Heightmap.SCALE_MAX - Heightmap.SCALE_MIN) * Math.random());
+        const power = Heightmap.POWER_MIN + (Heightmap.POWER_MAX - Heightmap.POWER_MIN) * Math.random();
+        const waterThreshold = Heightmap.WATER_THRESHOLD_MIN + (Heightmap.WATER_THRESHOLD_MAX - Heightmap.WATER_THRESHOLD_MIN) * Math.random();
         const noises = makeNoises(maxScale);
 
         for (let y = 0; y < size; ++y) for (let x = 0; x < size; ++x) {
@@ -69,7 +71,7 @@ const Heightmap = function(size) {
                 scale *= Heightmap.SCALE_FALLOFF;
             }
 
-            let height = multiplier * Math.pow(sample, Heightmap.POWER) - Heightmap.WATER_THRESHOLD;
+            let height = multiplier * Math.pow(sample, power) - waterThreshold;
 
             if (height > 1) {
                 height = Math.max(Heightmap.VOLCANO_MIN, 1 - Math.min(1, Math.max(0, height - 1 - Heightmap.VOLCANO_RIM)));
@@ -120,12 +122,15 @@ Heightmap.TYPE_DEFAULT = 0;
 Heightmap.TYPE_VOLCANO = 1;
 Heightmap.VOLCANO_RIM = 0.07;
 Heightmap.NORMAL_EDGE = new Vector3(0, 0, -1);
-Heightmap.WATER_THRESHOLD = 0.06;
-Heightmap.POWER = 3.5;
+Heightmap.WATER_THRESHOLD_MIN = 0.06;
+Heightmap.WATER_THRESHOLD_MAX = 0.1;
+Heightmap.POWER_MIN = 3;
+Heightmap.POWER_MAX = 4;
 Heightmap.MULTIPLIER = 5;
 Heightmap.PEAK_POWER = 0.7;
 Heightmap.VOLCANO_MIN = 0.85;
-Heightmap.SCALE = 5;
+Heightmap.SCALE_MIN = 4;
+Heightmap.SCALE_MAX = 6;
 Heightmap.SCALE_FALLOFF = 1.8;
 Heightmap.OCTAVES = 7;
 Heightmap.OCTAVE_FALLOFF = 2.4;
