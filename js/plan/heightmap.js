@@ -60,6 +60,13 @@ const Heightmap = function(size) {
             const peakDistance = Math.min(1, Math.sqrt(dx * dx + dy * dy) / size * 2);
             const multiplier = Heightmap.MULTIPLIER * Math.pow(0.5 + 0.5 * Math.cos(Math.PI * peakDistance), Heightmap.PEAK_POWER);
 
+            if (multiplier === 0) {
+                types[index] = Heightmap.TYPE_DEFAULT;
+                heights[index] = 0;
+
+                continue;
+            }
+
             let sample = 0;
             let influence = Heightmap.OCTAVE_INFLUENCE_INITIAL;
             let scale = maxScale;
