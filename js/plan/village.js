@@ -78,7 +78,7 @@ const Village = function(height, heightmap, bounds, scale) {
 
         for (let ring = 0; ring < Village.RINGS_MAX && plans.length < hutCount; ++ring) {
             const angleOffset = Math.random();
-            const huts = Math.floor(Math.PI * ring * spacingAverage * 2 / spacingAverage);
+            const huts = Math.floor(Math.PI * ring * Village.HUT_SPACING_MIN * 2 / spacingAverage);
             let placed = false;
 
             for (let i = 0; i < huts && plans.length < hutCount; ++i) {
