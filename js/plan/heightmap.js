@@ -17,9 +17,8 @@ const Heightmap = function(size) {
             const right = new Vector3(step, 0, heights[index + 1] - heights[index]);
             const top = new Vector3(0, -step, heights[index - size] - heights[index]);
             const bottom = new Vector3(0, step, heights[index + size] - heights[index]);
-            const normal = new Vector3(0, 0, 0);
+            const normal = bottom.cross(left);
 
-            normal.add(bottom.cross(left));
             normal.add(right.cross(bottom));
             normal.add(top.cross(right));
             normal.add(left.cross(top));
@@ -48,6 +47,7 @@ const Heightmap = function(size) {
     };
 
     const fill = () => {
+        const peakPower = Heightmap.PEAK_POWER_MIN + (Heightmap.PEAK_POWER_MAX - Heightmap.PEAK_POWER_MIN) * Math.random();
         const maxScale = (1 / size) * (Heightmap.SCALE_MIN + (Heightmap.SCALE_MAX - Heightmap.SCALE_MIN) * Math.random());
         const power = Heightmap.POWER_MIN + (Heightmap.POWER_MAX - Heightmap.POWER_MIN) * Math.random();
         const waterThreshold = Heightmap.WATER_THRESHOLD_MIN + (Heightmap.WATER_THRESHOLD_MAX - Heightmap.WATER_THRESHOLD_MIN) * Math.random();
@@ -58,7 +58,7 @@ const Heightmap = function(size) {
             const dx = size * 0.5 - x;
             const dy = size * 0.5 - y;
             const peakDistance = Math.min(1, Math.sqrt(dx * dx + dy * dy) / size * 2);
-            const multiplier = Heightmap.MULTIPLIER * Math.pow(0.5 + 0.5 * Math.cos(Math.PI * peakDistance), Heightmap.PEAK_POWER);
+            const multiplier = Heightmap.MULTIPLIER * Math.pow(0.5 + 0.5 * Math.cos(Math.PI * peakDistance), peakPower);
 
             if (multiplier === 0) {
                 types[index] = Heightmap.TYPE_DEFAULT;
@@ -134,7 +134,8 @@ Heightmap.WATER_THRESHOLD_MAX = 0.1;
 Heightmap.POWER_MIN = 3.2;
 Heightmap.POWER_MAX = 3.8;
 Heightmap.MULTIPLIER = 5;
-Heightmap.PEAK_POWER = 0.7;
+Heightmap.PEAK_POWER_MIN = 0.6;
+Heightmap.PEAK_POWER_MAX = 1;
 Heightmap.VOLCANO_MIN = 0.85;
 Heightmap.SCALE_MIN = 4;
 Heightmap.SCALE_MAX = 6;
